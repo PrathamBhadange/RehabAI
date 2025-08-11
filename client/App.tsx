@@ -3,6 +3,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
+import StartRecovery from "./pages/StartRecovery";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { AuthProvider } from "./contexts/AuthContext";
