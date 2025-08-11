@@ -119,6 +119,23 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showPatientModal, setShowPatientModal] = useState(false);
+  const [showAddPatientModal, setShowAddPatientModal] = useState(false);
+  const [patients, setPatients] = useState(mockPatients);
+  const [newPatient, setNewPatient] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    dateOfBirth: '',
+    condition: '',
+    surgeryDate: '',
+    primaryPhysician: '',
+    emergencyContact: '',
+    emergencyPhone: '',
+    notes: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [notifications, setNotifications] = useState([
     { id: 1, message: "Sarah Johnson completed today's exercises", time: "10 min ago", type: "success" },
     { id: 2, message: "New patient Michael Chen registered", time: "1 hour ago", type: "info" },
