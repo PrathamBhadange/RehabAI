@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Activity, ChevronDown } from 'lucide-react';
+import { Menu, X, Activity, User, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
