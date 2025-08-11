@@ -478,10 +478,4 @@ export function ExerciseLibraryCard({ exercise, onSelect, onPreview }: ExerciseL
       </CardContent>
     </Card>
   );
-
-  function formatTime(seconds: number) {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  }
 }
