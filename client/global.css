@@ -109,5 +109,40 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .medical-gradient {
+    background: linear-gradient(135deg, hsl(var(--medical-blue)) 0%, hsl(var(--medical-green)) 100%);
+  }
+
+  .medical-gradient-subtle {
+    background: linear-gradient(135deg, hsl(var(--medical-light-blue)) 0%, hsl(var(--background)) 100%);
+  }
+
+  .text-medical-blue {
+    color: hsl(var(--medical-blue));
+  }
+
+  .text-medical-green {
+    color: hsl(var(--medical-green));
+  }
+
+  .text-medical-navy {
+    color: hsl(var(--medical-navy));
+  }
+
+  .bg-medical-blue {
+    background-color: hsl(var(--medical-blue));
+  }
+
+  .bg-medical-green {
+    background-color: hsl(var(--medical-green));
+  }
+
+  .bg-medical-light-blue {
+    background-color: hsl(var(--medical-light-blue));
   }
 }
