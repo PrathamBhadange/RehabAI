@@ -147,10 +147,112 @@ export default function Dashboard() {
     window.location.href = '/';
   };
 
-  const filteredPatients = mockPatients.filter(patient =>
+  const filteredPatients = patients.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     patient.condition.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!newPatient.firstName.trim()) errors.firstName = 'First name is required';
+    if (!newPatient.lastName.trim()) errors.lastName = 'Last name is required';
+    if (!newPatient.email.trim()) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(newPatient.email)) errors.email = 'Email is invalid';
+    if (!newPatient.phone.trim()) errors.phone = 'Phone number is required';
+    if (!newPatient.dateOfBirth) errors.dateOfBirth = 'Date of birth is required';
+    if (!newPatient.condition.trim()) errors.condition = 'Condition is required';
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleAddPatient = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const patient = {
+        id: patients.length + 1,
+        name: `${newPatient.firstName} ${newPatient.lastName}`,
+        condition: newPatient.condition,
+        progress: 0,
+        nextSession: "Not scheduled",
+        status: "active",
+        lastActivity: "Just added",
+        ...newPatient
+      };
+
+      setPatients(prev => [...prev, patient]);
+
+      // Add success notification
+      setNotifications(prev => [
+        {
+          id: Date.now(),
+          message: `New patient ${patient.name} added successfully`,
+          time: "Just now",
+          type: "success"
+        },
+        ...prev
+      ]);
+
+      // Reset form
+      setNewPatient({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        dateOfBirth: '',
+        condition: '',
+        surgeryDate: '',
+        primaryPhysician: '',
+        emergencyContact: '',
+        emergencyPhone: '',
+        notes: ''
+      });
+
+      setShowAddPatientModal(false);
+      setFormErrors({});
+
+    } catch (error) {
+      console.error('Error adding patient:', error);
+      // Add error notification
+      setNotifications(prev => [
+        {
+          id: Date.now(),
+          message: "Error adding patient. Please try again.",
+          time: "Just now",
+          type: "error"
+        },
+        ...prev
+      ]);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setNewPatient({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      dateOfBirth: '',
+      condition: '',
+      surgeryDate: '',
+      primaryPhysician: '',
+      emergencyContact: '',
+      emergencyPhone: '',
+      notes: ''
+    });
+    setFormErrors({});
+  };
 
   if (!user) {
     return (
