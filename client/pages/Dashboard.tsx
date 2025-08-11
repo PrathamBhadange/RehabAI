@@ -874,64 +874,52 @@ export default function Dashboard() {
               <div className="grid lg:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Today's Exercises</CardTitle>
+                    <CardTitle className="flex items-center justify-between">
+                      Today's Exercises
+                      <Badge variant="outline">
+                        {todaysExercises.filter(e => e.completed).length}/{todaysExercises.length} Complete
+                      </Badge>
+                    </CardTitle>
                     <CardDescription>Complete your daily rehabilitation routine</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {[
-                      { name: "Knee Flexion", duration: "10 min", completed: true },
-                      { name: "Range of Motion", duration: "15 min", completed: true },
-                      { name: "Strength Training", duration: "20 min", completed: false },
-                      { name: "Balance Exercise", duration: "10 min", completed: false }
-                    ].map((exercise, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-medical-light-blue rounded-lg">
-                        <div className="flex items-center space-x-3">
-                          <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                            exercise.completed ? 'bg-medical-green text-white' : 'bg-gray-200'
-                          }`}>
-                            {exercise.completed ? <CheckCircle className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
-                          </div>
-                          <div>
-                            <div className="font-medium">{exercise.name}</div>
-                            <div className="text-sm text-muted-foreground">{exercise.duration}</div>
-                          </div>
-                        </div>
-                        <Button 
-                          variant={exercise.completed ? "outline" : "default"}
-                          size="sm"
-                          className={exercise.completed ? "" : "medical-gradient text-white"}
-                          asChild
-                        >
-                          <Link to="/start-recovery">
-                            {exercise.completed ? 'Review' : 'Start'}
-                          </Link>
-                        </Button>
-                      </div>
+                    {todaysExercises.map((exercise) => (
+                      <ExerciseCard
+                        key={exercise.id}
+                        exercise={exercise}
+                        variant="compact"
+                        onComplete={handleExerciseComplete}
+                        onStart={handleExerciseStart}
+                        showTimer={true}
+                      />
                     ))}
+
+                    {todaysExercises.length === 0 && (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                        <p>No exercises scheduled for today</p>
+                        <p className="text-sm">Add exercises from the library below</p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
                     <CardTitle>Exercise Library</CardTitle>
-                    <CardDescription>Browse available exercises</CardDescription>
+                    <CardDescription>Browse and add exercises to your daily routine</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    {[
-                      { name: "Ankle Pumps", category: "Flexibility", difficulty: "Beginner" },
-                      { name: "Wall Push-ups", category: "Strength", difficulty: "Intermediate" },
-                      { name: "Seated Marching", category: "Cardio", difficulty: "Beginner" },
-                      { name: "Heel Slides", category: "Mobility", difficulty: "Beginner" }
-                    ].map((exercise, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg hover:bg-medical-light-blue transition-colors">
-                        <div>
-                          <div className="font-medium">{exercise.name}</div>
-                          <div className="text-sm text-muted-foreground">{exercise.category} • {exercise.difficulty}</div>
-                        </div>
-                        <Button variant="ghost" size="sm">
-                          <Play className="h-4 w-4" />
-                        </Button>
-                      </div>
+                  <CardContent className="space-y-3">
+                    {exerciseLibrary.map((exercise) => (
+                      <ExerciseLibraryCard
+                        key={exercise.id}
+                        exercise={exercise}
+                        onSelect={addExerciseToToday}
+                        onPreview={(exercise) => {
+                          // Could open a preview modal
+                          console.log('Preview exercise:', exercise);
+                        }}
+                      />
                     ))}
                   </CardContent>
                 </Card>
