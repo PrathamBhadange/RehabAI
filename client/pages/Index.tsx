@@ -446,11 +446,11 @@ export default function Index() {
             with AI-powered rehabilitation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-medical-blue hover:bg-gray-100">
-              Start Free Trial
+            <Button size="lg" variant="secondary" className="bg-white text-medical-blue hover:bg-gray-100" asChild>
+              <Link to="/start-recovery">Start Free Trial</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-medical-blue">
-              Book a Demo
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-medical-blue" asChild>
+              <Link to="/for-providers">Book a Demo</Link>
             </Button>
           </div>
           <div className="mt-8 flex items-center justify-center space-x-6 text-sm opacity-80">
