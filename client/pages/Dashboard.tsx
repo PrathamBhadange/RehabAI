@@ -139,6 +139,158 @@ export default function Dashboard() {
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [todaysExercises, setTodaysExercises] = useState<Exercise[]>([
+    {
+      id: 'knee-flexion',
+      name: 'Knee Flexion',
+      category: 'Mobility',
+      difficulty: 'Beginner',
+      duration: 600, // 10 minutes
+      reps: 15,
+      description: 'Gentle knee bending exercise for post-surgery recovery',
+      instructions: [
+        'Sit comfortably in a chair with back support',
+        'Slowly bend your knee, lifting your foot off the ground',
+        'Hold for 2-3 seconds at the top',
+        'Slowly lower your foot back down',
+        'Repeat for the prescribed number of repetitions'
+      ],
+      tips: [
+        'Keep your movements slow and controlled',
+        'Stop if you feel sharp pain',
+        'Focus on your breathing'
+      ],
+      completed: true,
+      progress: 100,
+      streak: 5
+    },
+    {
+      id: 'range-motion',
+      name: 'Range of Motion',
+      category: 'Flexibility',
+      difficulty: 'Beginner',
+      duration: 900, // 15 minutes
+      description: 'Improve joint flexibility and mobility',
+      instructions: [
+        'Start with gentle circular motions',
+        'Move joints through full range of motion',
+        'Hold stretches for 15-30 seconds',
+        'Breathe deeply throughout'
+      ],
+      tips: [
+        'Never force a movement',
+        'Warm up before starting',
+        'Stay hydrated'
+      ],
+      completed: true,
+      progress: 100,
+      streak: 3
+    },
+    {
+      id: 'strength-training',
+      name: 'Strength Training',
+      category: 'Strength',
+      difficulty: 'Intermediate',
+      duration: 1200, // 20 minutes
+      reps: 12,
+      description: 'Light resistance exercises to build muscle strength',
+      instructions: [
+        'Use light weights or resistance bands',
+        'Focus on proper form over speed',
+        'Complete 2-3 sets with rest between',
+        'Increase weight gradually over time'
+      ],
+      tips: [
+        'Quality over quantity',
+        'Rest 30-60 seconds between sets',
+        'Listen to your body'
+      ],
+      completed: false,
+      progress: 0
+    },
+    {
+      id: 'balance-exercise',
+      name: 'Balance Exercise',
+      category: 'Balance',
+      difficulty: 'Beginner',
+      duration: 600, // 10 minutes
+      description: 'Improve stability and prevent falls',
+      instructions: [
+        'Stand near a wall or chair for support',
+        'Practice standing on one foot',
+        'Try heel-to-toe walking',
+        'Hold positions for 10-30 seconds'
+      ],
+      tips: [
+        'Always have support nearby',
+        'Start with shorter holds',
+        'Practice daily for best results'
+      ],
+      completed: false,
+      progress: 0
+    }
+  ]);
+  const [exerciseLibrary] = useState<Exercise[]>([
+    {
+      id: 'ankle-pumps',
+      name: 'Ankle Pumps',
+      category: 'Circulation',
+      difficulty: 'Beginner',
+      duration: 300,
+      reps: 20,
+      description: 'Promote circulation and ankle flexibility',
+      instructions: [
+        'Lie down or sit comfortably',
+        'Point your toes away from you, then flex them back',
+        'Feel the stretch in your calf muscles',
+        'Keep movements slow and deliberate'
+      ]
+    },
+    {
+      id: 'wall-pushups',
+      name: 'Wall Push-ups',
+      category: 'Strength',
+      difficulty: 'Intermediate',
+      duration: 480,
+      reps: 10,
+      description: 'Upper body strengthening exercise',
+      instructions: [
+        'Stand arm\'s length from a wall',
+        'Place palms flat against wall at shoulder height',
+        'Lean in and push back in controlled motion',
+        'Keep your body straight throughout'
+      ]
+    },
+    {
+      id: 'seated-marching',
+      name: 'Seated Marching',
+      category: 'Cardio',
+      difficulty: 'Beginner',
+      duration: 600,
+      description: 'Low-impact cardiovascular exercise',
+      instructions: [
+        'Sit upright in a sturdy chair',
+        'Lift knees alternately as if marching',
+        'Swing arms naturally with the movement',
+        'Maintain steady rhythm'
+      ]
+    },
+    {
+      id: 'heel-slides',
+      name: 'Heel Slides',
+      category: 'Mobility',
+      difficulty: 'Beginner',
+      duration: 420,
+      reps: 15,
+      description: 'Improve knee and hip mobility',
+      instructions: [
+        'Lie on your back with legs extended',
+        'Slowly slide heel toward buttocks',
+        'Hold briefly then slide back',
+        'Keep foot on the ground throughout'
+      ]
+    }
+  ]);
   const [notifications, setNotifications] = useState([
     { id: 1, message: "Sarah Johnson completed today's exercises", time: "10 min ago", type: "success" },
     { id: 2, message: "New patient Michael Chen registered", time: "1 hour ago", type: "info" },
