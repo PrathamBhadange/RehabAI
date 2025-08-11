@@ -22,6 +22,20 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+// Difficulty color mapping used by all components
+const difficultyColor = {
+  'Beginner': 'bg-green-100 text-green-700 border-green-200',
+  'Intermediate': 'bg-yellow-100 text-yellow-700 border-yellow-200',
+  'Advanced': 'bg-red-100 text-red-700 border-red-200'
+};
+
+// Helper function for formatting time
+const formatTime = (seconds: number) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
+
 export interface Exercise {
   id: string;
   name: string;
