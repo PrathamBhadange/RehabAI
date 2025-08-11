@@ -267,16 +267,55 @@ const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
 );
 CardContent.displayName = "CardContent";
 
-const CardFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
-    {...props}
-  />
-));
+const cardFooterVariants = cva("flex p-6 pt-0 transition-colors", {
+  variants: {
+    variant: {
+      default: "items-center",
+      actions: "items-center justify-between",
+      center: "items-center justify-center",
+      start: "items-center justify-start",
+      end: "items-center justify-end",
+      column: "flex-col items-start space-y-2",
+    },
+    separated: {
+      true: "border-t mt-4 pt-4",
+      false: "",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    separated: false,
+  },
+});
+
+export interface CardFooterProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardFooterVariants> {
+  primaryAction?: React.ReactNode;
+  secondaryAction?: React.ReactNode;
+}
+
+const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
+  ({ className, variant, separated, primaryAction, secondaryAction, children, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardFooterVariants({ variant, separated }), className)}
+      {...props}
+    >
+      {primaryAction || secondaryAction ? (
+        <>
+          <div className="flex-1">{children}</div>
+          <div className="flex items-center space-x-2">
+            {secondaryAction}
+            {primaryAction}
+          </div>
+        </>
+      ) : (
+        children
+      )}
+    </div>
+  )
+);
 CardFooter.displayName = "CardFooter";
 
 export {
