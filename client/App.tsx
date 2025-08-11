@@ -20,6 +20,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<SignIn />} />
               <Route path="/get-started" element={<SignIn />} />
+              <Route path="/start-recovery" element={<StartRecovery />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/features" element={<PlaceholderPage title="Features" />} />
               <Route path="/for-patients" element={<PlaceholderPage title="For Patients" />} />
