@@ -1,46 +1,52 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  CheckCircle, 
-  Clock, 
-  Target, 
-  TrendingUp, 
-  ChevronDown, 
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  CheckCircle,
+  Clock,
+  Target,
+  TrendingUp,
+  ChevronDown,
   ChevronUp,
   Timer,
   Zap,
   Award,
   Heart,
-  Activity
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Activity,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Difficulty color mapping used by all components
 const difficultyColor = {
-  'Beginner': 'bg-green-100 text-green-700 border-green-200',
-  'Intermediate': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  'Advanced': 'bg-red-100 text-red-700 border-red-200'
+  Beginner: "bg-green-100 text-green-700 border-green-200",
+  Intermediate: "bg-yellow-100 text-yellow-700 border-yellow-200",
+  Advanced: "bg-red-100 text-red-700 border-red-200",
 };
 
 // Helper function for formatting time
 const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 };
 
 export interface Exercise {
   id: string;
   name: string;
   category: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
+  difficulty: "Beginner" | "Intermediate" | "Advanced";
   duration: number; // in seconds
   reps?: number;
   description: string;
@@ -58,18 +64,18 @@ interface ExerciseCardProps {
   exercise: Exercise;
   onComplete?: (exerciseId: string) => void;
   onStart?: (exerciseId: string) => void;
-  variant?: 'default' | 'compact' | 'detailed';
+  variant?: "default" | "compact" | "detailed";
   showTimer?: boolean;
   autoStart?: boolean;
 }
 
-export function ExerciseCard({ 
-  exercise, 
-  onComplete, 
+export function ExerciseCard({
+  exercise,
+  onComplete,
   onStart,
-  variant = 'default',
+  variant = "default",
   showTimer = true,
-  autoStart = false 
+  autoStart = false,
 }: ExerciseCardProps) {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -89,7 +95,7 @@ export function ExerciseCard({
     let interval: NodeJS.Timeout;
     if (isActive && !isPaused && timeRemaining > 0) {
       interval = setInterval(() => {
-        setTimeRemaining(time => {
+        setTimeRemaining((time) => {
           if (time <= 1) {
             handleComplete();
             return 0;
@@ -105,7 +111,7 @@ export function ExerciseCard({
     setIsActive(true);
     setIsPaused(false);
     onStart?.(exercise.id);
-    
+
     // Show encouragement periodically
     const encouragementInterval = setInterval(() => {
       if (isActive && !isPaused) {
@@ -137,7 +143,7 @@ export function ExerciseCard({
     setIsActive(false);
     setSessionCompleted(true);
     onComplete?.(exercise.id);
-    
+
     // Show completion celebration
     setShowEncouragement(true);
     setTimeout(() => setShowEncouragement(false), 3000);
@@ -145,73 +151,103 @@ export function ExerciseCard({
 
   const handleRepComplete = () => {
     if (exercise.reps && currentRep < exercise.reps - 1) {
-      setCurrentRep(prev => prev + 1);
+      setCurrentRep((prev) => prev + 1);
     } else {
       handleComplete();
     }
   };
 
-  const progress = ((exercise.duration - timeRemaining) / exercise.duration) * 100;
+  const progress =
+    ((exercise.duration - timeRemaining) / exercise.duration) * 100;
 
   const encouragementMessages = [
     "Keep going! You're doing great! 💪",
     "Perfect form! Stay focused! 🎯",
     "You've got this! Almost there! ⭐",
     "Excellent progress! Keep it up! 🔥",
-    "Strong work! Stay consistent! 💯"
+    "Strong work! Stay consistent! 💯",
   ];
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
-      <Card className={cn(
-        "transition-all duration-200",
-        exercise.completed ? "border-green-200 bg-green-50" : "hover:shadow-md",
-        isActive ? "border-blue-200 bg-blue-50" : ""
-      )}>
+      <Card
+        className={cn(
+          "transition-all duration-200",
+          exercise.completed
+            ? "border-green-200 bg-green-50"
+            : "hover:shadow-md",
+          isActive ? "border-blue-200 bg-blue-50" : "",
+        )}
+      >
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className={cn(
-                "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
-                exercise.completed ? "bg-green-500 text-white" : 
-                isActive ? "bg-blue-500 text-white" : "bg-gray-200"
-              )}>
-                {exercise.completed ? <CheckCircle className="h-4 w-4" /> : 
-                 isActive ? <Timer className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
+              <div
+                className={cn(
+                  "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                  exercise.completed
+                    ? "bg-green-500 text-white"
+                    : isActive
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200",
+                )}
+              >
+                {exercise.completed ? (
+                  <CheckCircle className="h-4 w-4" />
+                ) : isActive ? (
+                  <Timer className="h-4 w-4" />
+                ) : (
+                  <Clock className="h-4 w-4" />
+                )}
               </div>
               <div>
                 <div className="font-medium text-sm">{exercise.name}</div>
                 <div className="text-xs text-muted-foreground">
-                  {exercise.reps ? `${exercise.reps} reps` : formatTime(exercise.duration)}
+                  {exercise.reps
+                    ? `${exercise.reps} reps`
+                    : formatTime(exercise.duration)}
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               {isActive && showTimer && (
                 <div className="text-sm font-mono font-bold text-blue-600">
                   {formatTime(timeRemaining)}
                 </div>
               )}
-              
+
               {!exercise.completed && (
                 <Button
                   size="sm"
                   variant={isActive ? "outline" : "default"}
-                  onClick={isActive ? (isPaused ? handleResume : handlePause) : handleStart}
+                  onClick={
+                    isActive
+                      ? isPaused
+                        ? handleResume
+                        : handlePause
+                      : handleStart
+                  }
                   className={!isActive ? "medical-gradient text-white" : ""}
                 >
-                  {isActive ? (isPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />) : 
-                   <Play className="h-3 w-3" />}
+                  {isActive ? (
+                    isPaused ? (
+                      <Play className="h-3 w-3" />
+                    ) : (
+                      <Pause className="h-3 w-3" />
+                    )
+                  ) : (
+                    <Play className="h-3 w-3" />
+                  )}
                 </Button>
               )}
-              
+
               {exercise.completed && (
                 <Badge className="bg-green-100 text-green-700">Completed</Badge>
               )}
             </div>
           </div>
-          
+
           {isActive && (
             <div className="mt-3">
               <Progress value={progress} className="h-1" />
@@ -223,12 +259,14 @@ export function ExerciseCard({
   }
 
   return (
-    <Card className={cn(
-      "transition-all duration-200",
-      exercise.completed ? "border-green-200 bg-green-50" : "",
-      isActive ? "border-blue-200 bg-blue-50 shadow-lg" : "hover:shadow-md",
-      sessionCompleted ? "border-green-300 bg-green-100" : ""
-    )}>
+    <Card
+      className={cn(
+        "transition-all duration-200",
+        exercise.completed ? "border-green-200 bg-green-50" : "",
+        isActive ? "border-blue-200 bg-blue-50 shadow-lg" : "hover:shadow-md",
+        sessionCompleted ? "border-green-300 bg-green-100" : "",
+      )}
+    >
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
@@ -239,7 +277,7 @@ export function ExerciseCard({
               </Badge>
             </div>
             <CardDescription>{exercise.description}</CardDescription>
-            
+
             <div className="flex items-center space-x-4 text-sm text-muted-foreground">
               <div className="flex items-center space-x-1">
                 <Clock className="h-3 w-3" />
@@ -257,11 +295,13 @@ export function ExerciseCard({
               </div>
             </div>
           </div>
-          
+
           {exercise.streak && exercise.streak > 0 && (
             <div className="flex items-center space-x-1 text-orange-600">
               <Zap className="h-4 w-4" />
-              <span className="text-sm font-medium">{exercise.streak} day streak</span>
+              <span className="text-sm font-medium">
+                {exercise.streak} day streak
+              </span>
             </div>
           )}
         </div>
@@ -290,10 +330,11 @@ export function ExerciseCard({
           <Alert className="border-green-200 bg-green-50">
             <Heart className="h-4 w-4 text-green-600" />
             <AlertDescription className="text-green-700">
-              {sessionCompleted ? 
-                "🎉 Exercise completed! Great job!" : 
-                encouragementMessages[Math.floor(Math.random() * encouragementMessages.length)]
-              }
+              {sessionCompleted
+                ? "🎉 Exercise completed! Great job!"
+                : encouragementMessages[
+                    Math.floor(Math.random() * encouragementMessages.length)
+                  ]}
             </AlertDescription>
           </Alert>
         )}
@@ -305,12 +346,14 @@ export function ExerciseCard({
             <ol className="space-y-1 text-sm text-muted-foreground">
               {exercise.instructions.map((instruction, index) => (
                 <li key={index} className="flex items-start space-x-2">
-                  <span className="font-medium text-medical-blue">{index + 1}.</span>
+                  <span className="font-medium text-medical-blue">
+                    {index + 1}.
+                  </span>
                   <span>{instruction}</span>
                 </li>
               ))}
             </ol>
-            
+
             {exercise.tips && exercise.tips.length > 0 && (
               <div className="space-y-2">
                 <h4 className="font-semibold text-medical-navy">Tips:</h4>
@@ -350,16 +393,12 @@ export function ExerciseCard({
 
           <div className="flex space-x-2">
             {isActive && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleReset}
-              >
+              <Button variant="outline" size="sm" onClick={handleReset}>
                 <RotateCcw className="mr-1 h-3 w-3" />
                 Reset
               </Button>
             )}
-            
+
             {exercise.reps && isActive && (
               <Button
                 variant="outline"
@@ -375,7 +414,13 @@ export function ExerciseCard({
             {!sessionCompleted && !exercise.completed && (
               <Button
                 size="sm"
-                onClick={isActive ? (isPaused ? handleResume : handlePause) : handleStart}
+                onClick={
+                  isActive
+                    ? isPaused
+                      ? handleResume
+                      : handlePause
+                    : handleStart
+                }
                 className={isActive ? "" : "medical-gradient text-white"}
                 variant={isActive ? "outline" : "default"}
               >
@@ -406,11 +451,7 @@ export function ExerciseCard({
                   <Award className="mr-1 h-3 w-3" />
                   Completed
                 </Badge>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleReset}
-                >
+                <Button variant="outline" size="sm" onClick={handleReset}>
                   <RotateCcw className="mr-1 h-3 w-3" />
                   Restart
                 </Button>
@@ -430,7 +471,11 @@ interface ExerciseLibraryCardProps {
   onPreview?: (exercise: Exercise) => void;
 }
 
-export function ExerciseLibraryCard({ exercise, onSelect, onPreview }: ExerciseLibraryCardProps) {
+export function ExerciseLibraryCard({
+  exercise,
+  onSelect,
+  onPreview,
+}: ExerciseLibraryCardProps) {
   return (
     <Card className="hover:shadow-md transition-all duration-200 cursor-pointer group">
       <CardContent className="p-4">
@@ -440,11 +485,16 @@ export function ExerciseLibraryCard({ exercise, onSelect, onPreview }: ExerciseL
               <h4 className="font-medium group-hover:text-medical-blue transition-colors">
                 {exercise.name}
               </h4>
-              <Badge variant="outline" className={difficultyColor[exercise.difficulty]}>
+              <Badge
+                variant="outline"
+                className={difficultyColor[exercise.difficulty]}
+              >
                 {exercise.difficulty}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground mb-2">{exercise.description}</p>
+            <p className="text-sm text-muted-foreground mb-2">
+              {exercise.description}
+            </p>
             <div className="flex items-center space-x-3 text-xs text-muted-foreground">
               <span>{exercise.category}</span>
               <span>•</span>
@@ -457,7 +507,7 @@ export function ExerciseLibraryCard({ exercise, onSelect, onPreview }: ExerciseL
               )}
             </div>
           </div>
-          
+
           <div className="flex space-x-2">
             <Button
               variant="ghost"

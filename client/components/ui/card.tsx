@@ -9,14 +9,16 @@ const cardVariants = cva(
     variants: {
       variant: {
         default: "hover:shadow-md",
-        interactive: "hover:shadow-lg hover:scale-[1.02] cursor-pointer hover:border-primary/50",
+        interactive:
+          "hover:shadow-lg hover:scale-[1.02] cursor-pointer hover:border-primary/50",
         elevated: "shadow-lg hover:shadow-xl",
         outline: "border-2 border-dashed hover:border-solid hover:bg-muted/50",
         success: "border-green-200 bg-green-50 hover:bg-green-100",
         warning: "border-yellow-200 bg-yellow-50 hover:bg-yellow-100",
         error: "border-red-200 bg-red-50 hover:bg-red-100",
         info: "border-blue-200 bg-blue-50 hover:bg-blue-100",
-        medical: "border-medical-blue/20 bg-medical-blue/5 hover:bg-medical-blue/10",
+        medical:
+          "border-medical-blue/20 bg-medical-blue/5 hover:bg-medical-blue/10",
       },
       size: {
         default: "",
@@ -28,7 +30,7 @@ const cardVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface CardProps
@@ -40,7 +42,19 @@ export interface CardProps
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, size, asChild = false, href, loading, onClick, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      href,
+      loading,
+      onClick,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = href ? "a" : "div";
     const isClickable = onClick || href;
 
@@ -48,24 +62,31 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <Comp
         ref={ref}
         className={cn(
-          cardVariants({ variant: isClickable && !variant ? "interactive" : variant, size }),
+          cardVariants({
+            variant: isClickable && !variant ? "interactive" : variant,
+            size,
+          }),
           loading && "animate-pulse pointer-events-none opacity-70",
-          className
+          className,
         )}
         href={href}
         onClick={onClick}
         role={isClickable ? "button" : undefined}
         tabIndex={isClickable ? 0 : undefined}
-        onKeyDown={isClickable ? (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            onClick?.(e as any);
-          }
-        } : undefined}
+        onKeyDown={
+          isClickable
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onClick?.(e as any);
+                }
+              }
+            : undefined
+        }
         {...props}
       />
     );
-  }
+  },
 );
 Card.displayName = "Card";
 
@@ -78,21 +99,31 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
-  ({ className, action, badge, collapsible, collapsed, onToggle, children, ...props }, ref) => (
+  (
+    {
+      className,
+      action,
+      badge,
+      collapsible,
+      collapsed,
+      onToggle,
+      children,
+      ...props
+    },
+    ref,
+  ) => (
     <div
       ref={ref}
       className={cn(
         "flex flex-col space-y-1.5 p-6",
         collapsible && "cursor-pointer hover:bg-muted/30 transition-colors",
-        className
+        className,
       )}
       onClick={collapsible ? onToggle : undefined}
       {...props}
     >
       <div className="flex items-start justify-between">
-        <div className="flex-1 space-y-1.5">
-          {children}
-        </div>
+        <div className="flex-1 space-y-1.5">{children}</div>
         <div className="flex items-center space-x-2">
           {badge}
           {action}
@@ -107,20 +138,25 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
               <svg
                 className={cn(
                   "h-4 w-4 transition-transform",
-                  collapsed ? "rotate-180" : ""
+                  collapsed ? "rotate-180" : "",
                 )}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
           )}
         </div>
       </div>
     </div>
-  )
+  ),
 );
 CardHeader.displayName = "CardHeader";
 
@@ -158,29 +194,31 @@ const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
       className={cn(cardTitleVariants({ size, status }), className)}
       {...props}
     />
-  )
+  ),
 );
 CardTitle.displayName = "CardTitle";
 
-export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+export interface CardDescriptionProps
+  extends React.HTMLAttributes<HTMLParagraphElement> {
   truncate?: boolean;
   lines?: number;
 }
 
-const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
-  ({ className, truncate, lines, ...props }, ref) => (
-    <p
-      ref={ref}
-      className={cn(
-        "text-sm text-muted-foreground",
-        truncate && "truncate",
-        lines && `line-clamp-${lines}`,
-        className
-      )}
-      {...props}
-    />
-  )
-);
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  CardDescriptionProps
+>(({ className, truncate, lines, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn(
+      "text-sm text-muted-foreground",
+      truncate && "truncate",
+      lines && `line-clamp-${lines}`,
+      className,
+    )}
+    {...props}
+  />
+));
 CardDescription.displayName = "CardDescription";
 
 const cardContentVariants = cva("transition-all duration-200", {
@@ -213,21 +251,28 @@ export interface CardContentProps
 }
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
-  ({
-    className,
-    variant,
-    loading,
-    empty,
-    emptyMessage = "No data available",
-    emptyIcon,
-    children,
-    ...props
-  }, ref) => {
+  (
+    {
+      className,
+      variant,
+      loading,
+      empty,
+      emptyMessage = "No data available",
+      emptyIcon,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     if (empty) {
       return (
         <div
           ref={ref}
-          className={cn(cardContentVariants({ variant, loading }), "text-center py-8", className)}
+          className={cn(
+            cardContentVariants({ variant, loading }),
+            "text-center py-8",
+            className,
+          )}
           {...props}
         >
           <div className="flex flex-col items-center space-y-3 text-muted-foreground">
@@ -242,7 +287,10 @@ const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
       return (
         <div
           ref={ref}
-          className={cn(cardContentVariants({ variant, loading: true }), className)}
+          className={cn(
+            cardContentVariants({ variant, loading: true }),
+            className,
+          )}
           {...props}
         >
           <div className="space-y-3">
@@ -263,7 +311,7 @@ const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 CardContent.displayName = "CardContent";
 
@@ -296,7 +344,18 @@ export interface CardFooterProps
 }
 
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
-  ({ className, variant, separated, primaryAction, secondaryAction, children, ...props }, ref) => (
+  (
+    {
+      className,
+      variant,
+      separated,
+      primaryAction,
+      secondaryAction,
+      children,
+      ...props
+    },
+    ref,
+  ) => (
     <div
       ref={ref}
       className={cn(cardFooterVariants({ variant, separated }), className)}
@@ -314,7 +373,7 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
         children
       )}
     </div>
-  )
+  ),
 );
 CardFooter.displayName = "CardFooter";
 
@@ -333,7 +392,10 @@ export interface StatCardProps {
 }
 
 const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
-  ({ title, value, description, icon, trend, onClick, loading, ...props }, ref) => (
+  (
+    { title, value, description, icon, trend, onClick, loading, ...props },
+    ref,
+  ) => (
     <Card
       ref={ref}
       variant={onClick ? "interactive" : "default"}
@@ -350,27 +412,32 @@ const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
               <p className="text-xs text-muted-foreground">{description}</p>
             )}
             {trend && (
-              <div className={cn(
-                "flex items-center text-xs",
-                trend.direction === "up" ? "text-green-600" :
-                trend.direction === "down" ? "text-red-600" : "text-muted-foreground"
-              )}>
+              <div
+                className={cn(
+                  "flex items-center text-xs",
+                  trend.direction === "up"
+                    ? "text-green-600"
+                    : trend.direction === "down"
+                      ? "text-red-600"
+                      : "text-muted-foreground",
+                )}
+              >
                 <span className="mr-1">
-                  {trend.direction === "up" ? "↗" : trend.direction === "down" ? "↘" : "→"}
+                  {trend.direction === "up"
+                    ? "↗"
+                    : trend.direction === "down"
+                      ? "↘"
+                      : "→"}
                 </span>
                 {trend.value}
               </div>
             )}
           </div>
-          {icon && (
-            <div className="text-muted-foreground">
-              {icon}
-            </div>
-          )}
+          {icon && <div className="text-muted-foreground">{icon}</div>}
         </div>
       </CardContent>
     </Card>
-  )
+  ),
 );
 StatCard.displayName = "StatCard";
 
@@ -384,33 +451,30 @@ export interface ActionCardProps {
 }
 
 const ActionCard = React.forwardRef<HTMLDivElement, ActionCardProps>(
-  ({ title, description, icon, action, status = "default", onClick, ...props }, ref) => (
+  (
+    { title, description, icon, action, status = "default", onClick, ...props },
+    ref,
+  ) => (
     <Card
       ref={ref}
-      variant={status === "default" ? (onClick ? "interactive" : "default") : status}
+      variant={
+        status === "default" ? (onClick ? "interactive" : "default") : status
+      }
       onClick={onClick}
       {...props}
     >
       <CardHeader>
         <div className="flex items-center space-x-3">
-          {icon && (
-            <div className="flex-shrink-0">
-              {icon}
-            </div>
-          )}
+          {icon && <div className="flex-shrink-0">{icon}</div>}
           <div className="flex-1 min-w-0">
             <CardTitle size="sm">{title}</CardTitle>
-            {description && (
-              <CardDescription>{description}</CardDescription>
-            )}
+            {description && <CardDescription>{description}</CardDescription>}
           </div>
         </div>
       </CardHeader>
-      <CardFooter variant="end">
-        {action}
-      </CardFooter>
+      <CardFooter variant="end">{action}</CardFooter>
     </Card>
-  )
+  ),
 );
 ActionCard.displayName = "ActionCard";
 
@@ -423,7 +487,10 @@ export interface CollapsibleCardProps {
 }
 
 const CollapsibleCard = React.forwardRef<HTMLDivElement, CollapsibleCardProps>(
-  ({ title, description, children, defaultCollapsed = false, badge, ...props }, ref) => {
+  (
+    { title, description, children, defaultCollapsed = false, badge, ...props },
+    ref,
+  ) => {
     const [collapsed, setCollapsed] = React.useState(defaultCollapsed);
 
     return (
@@ -435,18 +502,12 @@ const CollapsibleCard = React.forwardRef<HTMLDivElement, CollapsibleCardProps>(
           badge={badge}
         >
           <CardTitle size="sm">{title}</CardTitle>
-          {description && (
-            <CardDescription>{description}</CardDescription>
-          )}
+          {description && <CardDescription>{description}</CardDescription>}
         </CardHeader>
-        {!collapsed && (
-          <CardContent>
-            {children}
-          </CardContent>
-        )}
+        {!collapsed && <CardContent>{children}</CardContent>}
       </Card>
     );
-  }
+  },
 );
 CollapsibleCard.displayName = "CollapsibleCard";
 

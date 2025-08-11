@@ -1,21 +1,33 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Activity, 
-  User, 
-  Calendar, 
-  TrendingUp, 
-  Video, 
+import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Activity,
+  User,
+  Calendar,
+  TrendingUp,
+  Video,
   Settings,
   LogOut,
   Bell,
@@ -38,10 +50,14 @@ import {
   Heart,
   Brain,
   Zap,
-  X
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { ExerciseCard, ExerciseLibraryCard, type Exercise } from '@/components/ExerciseCard';
+  X,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  ExerciseCard,
+  ExerciseLibraryCard,
+  type Exercise,
+} from "@/components/ExerciseCard";
 
 // Mock data for demonstration
 const mockPatients = [
@@ -52,7 +68,7 @@ const mockPatients = [
     progress: 78,
     nextSession: "Today, 2:00 PM",
     status: "active",
-    lastActivity: "2 hours ago"
+    lastActivity: "2 hours ago",
   },
   {
     id: 2,
@@ -61,7 +77,7 @@ const mockPatients = [
     progress: 45,
     nextSession: "Tomorrow, 10:00 AM",
     status: "active",
-    lastActivity: "5 hours ago"
+    lastActivity: "5 hours ago",
   },
   {
     id: 3,
@@ -70,7 +86,7 @@ const mockPatients = [
     progress: 92,
     nextSession: "Friday, 3:00 PM",
     status: "completing",
-    lastActivity: "1 day ago"
+    lastActivity: "1 day ago",
   },
   {
     id: 4,
@@ -79,8 +95,8 @@ const mockPatients = [
     progress: 34,
     nextSession: "Monday, 11:00 AM",
     status: "active",
-    lastActivity: "3 hours ago"
-  }
+    lastActivity: "3 hours ago",
+  },
 ];
 
 const mockAppointments = [
@@ -89,22 +105,22 @@ const mockAppointments = [
     patient: "Sarah Johnson",
     time: "2:00 PM",
     type: "Progress Review",
-    status: "upcoming"
+    status: "upcoming",
   },
   {
     id: 2,
     patient: "Michael Chen",
     time: "3:30 PM",
     type: "Initial Assessment",
-    status: "upcoming"
+    status: "upcoming",
   },
   {
     id: 3,
     patient: "Lisa Wang",
     time: "4:00 PM",
     type: "Follow-up",
-    status: "completed"
-  }
+    status: "completed",
+  },
 ];
 
 const mockAnalytics = {
@@ -113,7 +129,7 @@ const mockAnalytics = {
   completionRate: 94,
   averageProgress: 67,
   sessionsToday: 12,
-  satisfactionScore: 4.8
+  satisfactionScore: 4.8,
 };
 
 export default function Dashboard() {
@@ -125,198 +141,218 @@ export default function Dashboard() {
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [patients, setPatients] = useState(mockPatients);
   const [newPatient, setNewPatient] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    condition: '',
-    surgeryDate: '',
-    primaryPhysician: '',
-    emergencyContact: '',
-    emergencyPhone: '',
-    notes: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    dateOfBirth: "",
+    condition: "",
+    surgeryDate: "",
+    primaryPhysician: "",
+    emergencyContact: "",
+    emergencyPhone: "",
+    notes: "",
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [todaysExercises, setTodaysExercises] = useState<Exercise[]>([
     {
-      id: 'knee-flexion',
-      name: 'Knee Flexion',
-      category: 'Mobility',
-      difficulty: 'Beginner',
+      id: "knee-flexion",
+      name: "Knee Flexion",
+      category: "Mobility",
+      difficulty: "Beginner",
       duration: 600, // 10 minutes
       reps: 15,
-      description: 'Gentle knee bending exercise for post-surgery recovery',
+      description: "Gentle knee bending exercise for post-surgery recovery",
       instructions: [
-        'Sit comfortably in a chair with back support',
-        'Slowly bend your knee, lifting your foot off the ground',
-        'Hold for 2-3 seconds at the top',
-        'Slowly lower your foot back down',
-        'Repeat for the prescribed number of repetitions'
+        "Sit comfortably in a chair with back support",
+        "Slowly bend your knee, lifting your foot off the ground",
+        "Hold for 2-3 seconds at the top",
+        "Slowly lower your foot back down",
+        "Repeat for the prescribed number of repetitions",
       ],
       tips: [
-        'Keep your movements slow and controlled',
-        'Stop if you feel sharp pain',
-        'Focus on your breathing'
+        "Keep your movements slow and controlled",
+        "Stop if you feel sharp pain",
+        "Focus on your breathing",
       ],
       completed: true,
       progress: 100,
-      streak: 5
+      streak: 5,
     },
     {
-      id: 'range-motion',
-      name: 'Range of Motion',
-      category: 'Flexibility',
-      difficulty: 'Beginner',
+      id: "range-motion",
+      name: "Range of Motion",
+      category: "Flexibility",
+      difficulty: "Beginner",
       duration: 900, // 15 minutes
-      description: 'Improve joint flexibility and mobility',
+      description: "Improve joint flexibility and mobility",
       instructions: [
-        'Start with gentle circular motions',
-        'Move joints through full range of motion',
-        'Hold stretches for 15-30 seconds',
-        'Breathe deeply throughout'
+        "Start with gentle circular motions",
+        "Move joints through full range of motion",
+        "Hold stretches for 15-30 seconds",
+        "Breathe deeply throughout",
       ],
       tips: [
-        'Never force a movement',
-        'Warm up before starting',
-        'Stay hydrated'
+        "Never force a movement",
+        "Warm up before starting",
+        "Stay hydrated",
       ],
       completed: true,
       progress: 100,
-      streak: 3
+      streak: 3,
     },
     {
-      id: 'strength-training',
-      name: 'Strength Training',
-      category: 'Strength',
-      difficulty: 'Intermediate',
+      id: "strength-training",
+      name: "Strength Training",
+      category: "Strength",
+      difficulty: "Intermediate",
       duration: 1200, // 20 minutes
       reps: 12,
-      description: 'Light resistance exercises to build muscle strength',
+      description: "Light resistance exercises to build muscle strength",
       instructions: [
-        'Use light weights or resistance bands',
-        'Focus on proper form over speed',
-        'Complete 2-3 sets with rest between',
-        'Increase weight gradually over time'
+        "Use light weights or resistance bands",
+        "Focus on proper form over speed",
+        "Complete 2-3 sets with rest between",
+        "Increase weight gradually over time",
       ],
       tips: [
-        'Quality over quantity',
-        'Rest 30-60 seconds between sets',
-        'Listen to your body'
+        "Quality over quantity",
+        "Rest 30-60 seconds between sets",
+        "Listen to your body",
       ],
       completed: false,
-      progress: 0
+      progress: 0,
     },
     {
-      id: 'balance-exercise',
-      name: 'Balance Exercise',
-      category: 'Balance',
-      difficulty: 'Beginner',
+      id: "balance-exercise",
+      name: "Balance Exercise",
+      category: "Balance",
+      difficulty: "Beginner",
       duration: 600, // 10 minutes
-      description: 'Improve stability and prevent falls',
+      description: "Improve stability and prevent falls",
       instructions: [
-        'Stand near a wall or chair for support',
-        'Practice standing on one foot',
-        'Try heel-to-toe walking',
-        'Hold positions for 10-30 seconds'
+        "Stand near a wall or chair for support",
+        "Practice standing on one foot",
+        "Try heel-to-toe walking",
+        "Hold positions for 10-30 seconds",
       ],
       tips: [
-        'Always have support nearby',
-        'Start with shorter holds',
-        'Practice daily for best results'
+        "Always have support nearby",
+        "Start with shorter holds",
+        "Practice daily for best results",
       ],
       completed: false,
-      progress: 0
-    }
+      progress: 0,
+    },
   ]);
   const [exerciseLibrary] = useState<Exercise[]>([
     {
-      id: 'ankle-pumps',
-      name: 'Ankle Pumps',
-      category: 'Circulation',
-      difficulty: 'Beginner',
+      id: "ankle-pumps",
+      name: "Ankle Pumps",
+      category: "Circulation",
+      difficulty: "Beginner",
       duration: 300,
       reps: 20,
-      description: 'Promote circulation and ankle flexibility',
+      description: "Promote circulation and ankle flexibility",
       instructions: [
-        'Lie down or sit comfortably',
-        'Point your toes away from you, then flex them back',
-        'Feel the stretch in your calf muscles',
-        'Keep movements slow and deliberate'
-      ]
+        "Lie down or sit comfortably",
+        "Point your toes away from you, then flex them back",
+        "Feel the stretch in your calf muscles",
+        "Keep movements slow and deliberate",
+      ],
     },
     {
-      id: 'wall-pushups',
-      name: 'Wall Push-ups',
-      category: 'Strength',
-      difficulty: 'Intermediate',
+      id: "wall-pushups",
+      name: "Wall Push-ups",
+      category: "Strength",
+      difficulty: "Intermediate",
       duration: 480,
       reps: 10,
-      description: 'Upper body strengthening exercise',
+      description: "Upper body strengthening exercise",
       instructions: [
-        'Stand arm\'s length from a wall',
-        'Place palms flat against wall at shoulder height',
-        'Lean in and push back in controlled motion',
-        'Keep your body straight throughout'
-      ]
+        "Stand arm's length from a wall",
+        "Place palms flat against wall at shoulder height",
+        "Lean in and push back in controlled motion",
+        "Keep your body straight throughout",
+      ],
     },
     {
-      id: 'seated-marching',
-      name: 'Seated Marching',
-      category: 'Cardio',
-      difficulty: 'Beginner',
+      id: "seated-marching",
+      name: "Seated Marching",
+      category: "Cardio",
+      difficulty: "Beginner",
       duration: 600,
-      description: 'Low-impact cardiovascular exercise',
+      description: "Low-impact cardiovascular exercise",
       instructions: [
-        'Sit upright in a sturdy chair',
-        'Lift knees alternately as if marching',
-        'Swing arms naturally with the movement',
-        'Maintain steady rhythm'
-      ]
+        "Sit upright in a sturdy chair",
+        "Lift knees alternately as if marching",
+        "Swing arms naturally with the movement",
+        "Maintain steady rhythm",
+      ],
     },
     {
-      id: 'heel-slides',
-      name: 'Heel Slides',
-      category: 'Mobility',
-      difficulty: 'Beginner',
+      id: "heel-slides",
+      name: "Heel Slides",
+      category: "Mobility",
+      difficulty: "Beginner",
       duration: 420,
       reps: 15,
-      description: 'Improve knee and hip mobility',
+      description: "Improve knee and hip mobility",
       instructions: [
-        'Lie on your back with legs extended',
-        'Slowly slide heel toward buttocks',
-        'Hold briefly then slide back',
-        'Keep foot on the ground throughout'
-      ]
-    }
+        "Lie on your back with legs extended",
+        "Slowly slide heel toward buttocks",
+        "Hold briefly then slide back",
+        "Keep foot on the ground throughout",
+      ],
+    },
   ]);
   const [notifications, setNotifications] = useState([
-    { id: 1, message: "Sarah Johnson completed today's exercises", time: "10 min ago", type: "success" },
-    { id: 2, message: "New patient Michael Chen registered", time: "1 hour ago", type: "info" },
-    { id: 3, message: "Weekly report is ready for review", time: "2 hours ago", type: "info" }
+    {
+      id: 1,
+      message: "Sarah Johnson completed today's exercises",
+      time: "10 min ago",
+      type: "success",
+    },
+    {
+      id: 2,
+      message: "New patient Michael Chen registered",
+      time: "1 hour ago",
+      type: "info",
+    },
+    {
+      id: 3,
+      message: "Weekly report is ready for review",
+      time: "2 hours ago",
+      type: "info",
+    },
   ]);
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
-  const filteredPatients = patients.filter(patient =>
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    patient.condition.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPatients = patients.filter(
+    (patient) =>
+      patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      patient.condition.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const validateForm = () => {
     const errors = {};
 
-    if (!newPatient.firstName.trim()) errors.firstName = 'First name is required';
-    if (!newPatient.lastName.trim()) errors.lastName = 'Last name is required';
-    if (!newPatient.email.trim()) errors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(newPatient.email)) errors.email = 'Email is invalid';
-    if (!newPatient.phone.trim()) errors.phone = 'Phone number is required';
-    if (!newPatient.dateOfBirth) errors.dateOfBirth = 'Date of birth is required';
-    if (!newPatient.condition.trim()) errors.condition = 'Condition is required';
+    if (!newPatient.firstName.trim())
+      errors.firstName = "First name is required";
+    if (!newPatient.lastName.trim()) errors.lastName = "Last name is required";
+    if (!newPatient.email.trim()) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(newPatient.email))
+      errors.email = "Email is invalid";
+    if (!newPatient.phone.trim()) errors.phone = "Phone number is required";
+    if (!newPatient.dateOfBirth)
+      errors.dateOfBirth = "Date of birth is required";
+    if (!newPatient.condition.trim())
+      errors.condition = "Condition is required";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -331,7 +367,7 @@ export default function Dashboard() {
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const patient = {
         id: patients.length + 1,
@@ -341,51 +377,50 @@ export default function Dashboard() {
         nextSession: "Not scheduled",
         status: "active",
         lastActivity: "Just added",
-        ...newPatient
+        ...newPatient,
       };
 
-      setPatients(prev => [...prev, patient]);
+      setPatients((prev) => [...prev, patient]);
 
       // Add success notification
-      setNotifications(prev => [
+      setNotifications((prev) => [
         {
           id: Date.now(),
           message: `New patient ${patient.name} added successfully`,
           time: "Just now",
-          type: "success"
+          type: "success",
         },
-        ...prev
+        ...prev,
       ]);
 
       // Reset form
       setNewPatient({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        dateOfBirth: '',
-        condition: '',
-        surgeryDate: '',
-        primaryPhysician: '',
-        emergencyContact: '',
-        emergencyPhone: '',
-        notes: ''
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        dateOfBirth: "",
+        condition: "",
+        surgeryDate: "",
+        primaryPhysician: "",
+        emergencyContact: "",
+        emergencyPhone: "",
+        notes: "",
       });
 
       setShowAddPatientModal(false);
       setFormErrors({});
-
     } catch (error) {
-      console.error('Error adding patient:', error);
+      console.error("Error adding patient:", error);
       // Add error notification
-      setNotifications(prev => [
+      setNotifications((prev) => [
         {
           id: Date.now(),
           message: "Error adding patient. Please try again.",
           time: "Just now",
-          type: "error"
+          type: "error",
         },
-        ...prev
+        ...prev,
       ]);
     } finally {
       setIsSubmitting(false);
@@ -394,62 +429,62 @@ export default function Dashboard() {
 
   const resetForm = () => {
     setNewPatient({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      dateOfBirth: '',
-      condition: '',
-      surgeryDate: '',
-      primaryPhysician: '',
-      emergencyContact: '',
-      emergencyPhone: '',
-      notes: ''
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      dateOfBirth: "",
+      condition: "",
+      surgeryDate: "",
+      primaryPhysician: "",
+      emergencyContact: "",
+      emergencyPhone: "",
+      notes: "",
     });
     setFormErrors({});
   };
 
   const handleExerciseComplete = (exerciseId: string) => {
-    setTodaysExercises(prev =>
-      prev.map(exercise =>
+    setTodaysExercises((prev) =>
+      prev.map((exercise) =>
         exercise.id === exerciseId
           ? {
               ...exercise,
               completed: true,
               progress: 100,
               lastCompleted: new Date().toISOString(),
-              streak: (exercise.streak || 0) + 1
+              streak: (exercise.streak || 0) + 1,
             }
-          : exercise
-      )
+          : exercise,
+      ),
     );
 
     // Add completion notification
-    const exercise = todaysExercises.find(e => e.id === exerciseId);
+    const exercise = todaysExercises.find((e) => e.id === exerciseId);
     if (exercise) {
-      setNotifications(prev => [
+      setNotifications((prev) => [
         {
           id: Date.now(),
           message: `Great job! You completed ${exercise.name}`,
           time: "Just now",
-          type: "success"
+          type: "success",
         },
-        ...prev
+        ...prev,
       ]);
     }
   };
 
   const handleExerciseStart = (exerciseId: string) => {
-    const exercise = todaysExercises.find(e => e.id === exerciseId);
+    const exercise = todaysExercises.find((e) => e.id === exerciseId);
     if (exercise) {
-      setNotifications(prev => [
+      setNotifications((prev) => [
         {
           id: Date.now(),
           message: `Started ${exercise.name} - You've got this!`,
           time: "Just now",
-          type: "info"
+          type: "info",
         },
-        ...prev
+        ...prev,
       ]);
     }
   };
@@ -459,19 +494,19 @@ export default function Dashboard() {
       ...exercise,
       id: `${exercise.id}-${Date.now()}`,
       completed: false,
-      progress: 0
+      progress: 0,
     };
 
-    setTodaysExercises(prev => [...prev, newExercise]);
+    setTodaysExercises((prev) => [...prev, newExercise]);
 
-    setNotifications(prev => [
+    setNotifications((prev) => [
       {
         id: Date.now(),
         message: `Added ${exercise.name} to today's plan`,
         time: "Just now",
-        type: "info"
+        type: "info",
       },
-      ...prev
+      ...prev,
     ]);
   };
 
@@ -497,7 +532,9 @@ export default function Dashboard() {
               Welcome back, {user.firstName}!
             </h1>
             <p className="text-muted-foreground">
-              {user.role === 'provider' ? 'Manage your patients and track outcomes' : 'Track your rehabilitation progress'}
+              {user.role === "provider"
+                ? "Manage your patients and track outcomes"
+                : "Track your rehabilitation progress"}
             </p>
           </div>
           <div className="flex items-center space-x-4">
@@ -522,13 +559,15 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {user.role === 'provider' ? 'Total Patients' : 'Sessions Completed'}
+                {user.role === "provider"
+                  ? "Total Patients"
+                  : "Sessions Completed"}
               </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-medical-blue">
-                {user.role === 'provider' ? mockAnalytics.totalPatients : '23'}
+                {user.role === "provider" ? mockAnalytics.totalPatients : "23"}
               </div>
               <p className="text-xs text-muted-foreground">
                 +12% from last month
@@ -539,16 +578,22 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {user.role === 'provider' ? 'Active This Week' : 'Current Streak'}
+                {user.role === "provider"
+                  ? "Active This Week"
+                  : "Current Streak"}
               </CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-medical-green">
-                {user.role === 'provider' ? mockAnalytics.activeThisWeek : '7 days'}
+                {user.role === "provider"
+                  ? mockAnalytics.activeThisWeek
+                  : "7 days"}
               </div>
               <p className="text-xs text-muted-foreground">
-                {user.role === 'provider' ? '+8% from last week' : 'Personal best!'}
+                {user.role === "provider"
+                  ? "+8% from last week"
+                  : "Personal best!"}
               </p>
             </CardContent>
           </Card>
@@ -556,13 +601,15 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {user.role === 'provider' ? 'Completion Rate' : 'Progress'}
+                {user.role === "provider" ? "Completion Rate" : "Progress"}
               </CardTitle>
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-medical-blue">
-                {user.role === 'provider' ? `${mockAnalytics.completionRate}%` : '78%'}
+                {user.role === "provider"
+                  ? `${mockAnalytics.completionRate}%`
+                  : "78%"}
               </div>
               <p className="text-xs text-muted-foreground">
                 +2% from last week
@@ -573,27 +620,37 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {user.role === 'provider' ? 'Satisfaction Score' : 'Next Milestone'}
+                {user.role === "provider"
+                  ? "Satisfaction Score"
+                  : "Next Milestone"}
               </CardTitle>
               <Award className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-medical-green">
-                {user.role === 'provider' ? `${mockAnalytics.satisfactionScore}/5` : '85%'}
+                {user.role === "provider"
+                  ? `${mockAnalytics.satisfactionScore}/5`
+                  : "85%"}
               </div>
               <p className="text-xs text-muted-foreground">
-                {user.role === 'provider' ? 'Excellent rating' : '7% to go'}
+                {user.role === "provider" ? "Excellent rating" : "7% to go"}
               </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value={user.role === 'provider' ? 'patients' : 'exercises'}>
-              {user.role === 'provider' ? 'Patients' : 'Exercises'}
+            <TabsTrigger
+              value={user.role === "provider" ? "patients" : "exercises"}
+            >
+              {user.role === "provider" ? "Patients" : "Exercises"}
             </TabsTrigger>
             <TabsTrigger value="schedule">Schedule</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
@@ -608,27 +665,41 @@ export default function Dashboard() {
                   <CardHeader>
                     <CardTitle className="flex items-center">
                       <TrendingUp className="mr-2 h-5 w-5 text-medical-blue" />
-                      {user.role === 'provider' ? 'Recent Patient Activity' : 'Your Progress'}
+                      {user.role === "provider"
+                        ? "Recent Patient Activity"
+                        : "Your Progress"}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {user.role === 'provider' ? (
+                    {user.role === "provider" ? (
                       <div className="space-y-4">
                         {mockPatients.slice(0, 3).map((patient) => (
-                          <div key={patient.id} className="flex items-center justify-between p-3 bg-medical-light-blue rounded-lg">
+                          <div
+                            key={patient.id}
+                            className="flex items-center justify-between p-3 bg-medical-light-blue rounded-lg"
+                          >
                             <div className="flex items-center space-x-3">
                               <div className="h-10 w-10 bg-medical-blue/10 rounded-full flex items-center justify-center">
                                 <User className="h-5 w-5 text-medical-blue" />
                               </div>
                               <div>
-                                <div className="font-medium">{patient.name}</div>
-                                <div className="text-sm text-muted-foreground">{patient.condition}</div>
+                                <div className="font-medium">
+                                  {patient.name}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {patient.condition}
+                                </div>
                               </div>
                             </div>
                             <div className="flex items-center space-x-3">
                               <div className="text-right">
-                                <div className="text-sm font-medium">{patient.progress}%</div>
-                                <Progress value={patient.progress} className="w-20 h-2" />
+                                <div className="text-sm font-medium">
+                                  {patient.progress}%
+                                </div>
+                                <Progress
+                                  value={patient.progress}
+                                  className="w-20 h-2"
+                                />
                               </div>
                               <Button variant="ghost" size="sm">
                                 <Eye className="h-4 w-4" />
@@ -644,19 +715,31 @@ export default function Dashboard() {
                           <span className="font-semibold">78%</span>
                         </div>
                         <Progress value={78} className="h-3" />
-                        
+
                         <div className="grid grid-cols-3 gap-4 mt-6">
                           <div className="text-center">
-                            <div className="text-2xl font-bold text-medical-blue">23</div>
-                            <div className="text-sm text-muted-foreground">Sessions Done</div>
+                            <div className="text-2xl font-bold text-medical-blue">
+                              23
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Sessions Done
+                            </div>
                           </div>
                           <div className="text-center">
-                            <div className="text-2xl font-bold text-medical-green">7</div>
-                            <div className="text-sm text-muted-foreground">Day Streak</div>
+                            <div className="text-2xl font-bold text-medical-green">
+                              7
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Day Streak
+                            </div>
                           </div>
                           <div className="text-center">
-                            <div className="text-2xl font-bold text-medical-blue">4.2</div>
-                            <div className="text-sm text-muted-foreground">Avg Score</div>
+                            <div className="text-2xl font-bold text-medical-blue">
+                              4.2
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Avg Score
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -671,21 +754,31 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {user.role === 'provider' ? (
+                      {user.role === "provider" ? (
                         <>
-                          <Button className="h-20 flex-col medical-gradient text-white" asChild>
+                          <Button
+                            className="h-20 flex-col medical-gradient text-white"
+                            asChild
+                          >
                             <Link to="/start-recovery">
                               <Plus className="h-6 w-6 mb-2" />
                               Add Patient
                             </Link>
                           </Button>
-                          <Button className="h-20 flex-col bg-medical-green text-white" asChild>
+                          <Button
+                            className="h-20 flex-col bg-medical-green text-white"
+                            asChild
+                          >
                             <Link to="/for-providers">
                               <Calendar className="h-6 w-6 mb-2" />
                               Schedule Session
                             </Link>
                           </Button>
-                          <Button className="h-20 flex-col border-medical-blue text-medical-blue" variant="outline" asChild>
+                          <Button
+                            className="h-20 flex-col border-medical-blue text-medical-blue"
+                            variant="outline"
+                            asChild
+                          >
                             <Link to="/for-providers">
                               <BarChart3 className="h-6 w-6 mb-2" />
                               View Reports
@@ -694,19 +787,29 @@ export default function Dashboard() {
                         </>
                       ) : (
                         <>
-                          <Button className="h-20 flex-col medical-gradient text-white" asChild>
+                          <Button
+                            className="h-20 flex-col medical-gradient text-white"
+                            asChild
+                          >
                             <Link to="/start-recovery">
                               <Play className="h-6 w-6 mb-2" />
                               Start Exercise
                             </Link>
                           </Button>
-                          <Button className="h-20 flex-col bg-medical-green text-white" asChild>
+                          <Button
+                            className="h-20 flex-col bg-medical-green text-white"
+                            asChild
+                          >
                             <Link to="/dashboard">
                               <Video className="h-6 w-6 mb-2" />
                               Join Session
                             </Link>
                           </Button>
-                          <Button className="h-20 flex-col border-medical-blue text-medical-blue" variant="outline" asChild>
+                          <Button
+                            className="h-20 flex-col border-medical-blue text-medical-blue"
+                            variant="outline"
+                            asChild
+                          >
                             <Link to="/dashboard">
                               <TrendingUp className="h-6 w-6 mb-2" />
                               View Progress
@@ -731,14 +834,27 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {user.role === 'provider' ? (
+                      {user.role === "provider" ? (
                         mockAppointments.slice(0, 3).map((appointment) => (
-                          <div key={appointment.id} className="flex items-center justify-between p-2 bg-medical-light-blue rounded">
+                          <div
+                            key={appointment.id}
+                            className="flex items-center justify-between p-2 bg-medical-light-blue rounded"
+                          >
                             <div>
-                              <div className="font-medium text-sm">{appointment.patient}</div>
-                              <div className="text-xs text-muted-foreground">{appointment.type}</div>
+                              <div className="font-medium text-sm">
+                                {appointment.patient}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {appointment.type}
+                              </div>
                             </div>
-                            <Badge variant={appointment.status === 'completed' ? 'default' : 'secondary'}>
+                            <Badge
+                              variant={
+                                appointment.status === "completed"
+                                  ? "default"
+                                  : "secondary"
+                              }
+                            >
                               {appointment.time}
                             </Badge>
                           </div>
@@ -747,22 +863,34 @@ export default function Dashboard() {
                         <>
                           <div className="flex items-center justify-between p-2 bg-medical-light-blue rounded">
                             <div>
-                              <div className="font-medium text-sm">Morning Exercises</div>
-                              <div className="text-xs text-muted-foreground">Knee rehabilitation</div>
+                              <div className="font-medium text-sm">
+                                Morning Exercises
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                Knee rehabilitation
+                              </div>
                             </div>
                             <Badge className="bg-medical-green">9:00 AM</Badge>
                           </div>
                           <div className="flex items-center justify-between p-2 bg-medical-light-blue rounded">
                             <div>
-                              <div className="font-medium text-sm">PT Session</div>
-                              <div className="text-xs text-muted-foreground">Video call with Dr. Smith</div>
+                              <div className="font-medium text-sm">
+                                PT Session
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                Video call with Dr. Smith
+                              </div>
                             </div>
                             <Badge variant="outline">2:00 PM</Badge>
                           </div>
                           <div className="flex items-center justify-between p-2 bg-medical-light-blue rounded">
                             <div>
-                              <div className="font-medium text-sm">Evening Exercises</div>
-                              <div className="text-xs text-muted-foreground">Flexibility training</div>
+                              <div className="font-medium text-sm">
+                                Evening Exercises
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                Flexibility training
+                              </div>
                             </div>
                             <Badge variant="outline">6:00 PM</Badge>
                           </div>
@@ -783,13 +911,22 @@ export default function Dashboard() {
                   <CardContent>
                     <div className="space-y-3">
                       {notifications.map((notification) => (
-                        <div key={notification.id} className="flex items-start space-x-2">
-                          <div className={`h-2 w-2 rounded-full mt-2 ${
-                            notification.type === 'success' ? 'bg-medical-green' : 'bg-medical-blue'
-                          }`} />
+                        <div
+                          key={notification.id}
+                          className="flex items-start space-x-2"
+                        >
+                          <div
+                            className={`h-2 w-2 rounded-full mt-2 ${
+                              notification.type === "success"
+                                ? "bg-medical-green"
+                                : "bg-medical-blue"
+                            }`}
+                          />
                           <div className="flex-1">
                             <p className="text-sm">{notification.message}</p>
-                            <p className="text-xs text-muted-foreground">{notification.time}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {notification.time}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -801,8 +938,11 @@ export default function Dashboard() {
           </TabsContent>
 
           {/* Patients/Exercises Tab */}
-          <TabsContent value={user.role === 'provider' ? 'patients' : 'exercises'} className="space-y-6">
-            {user.role === 'provider' ? (
+          <TabsContent
+            value={user.role === "provider" ? "patients" : "exercises"}
+            className="space-y-6"
+          >
+            {user.role === "provider" ? (
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -830,26 +970,44 @@ export default function Dashboard() {
                         className="flex-1"
                       />
                     </div>
-                    
+
                     <div className="space-y-3">
                       {filteredPatients.map((patient) => (
-                        <div key={patient.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-medical-light-blue transition-colors">
+                        <div
+                          key={patient.id}
+                          className="flex items-center justify-between p-4 border rounded-lg hover:bg-medical-light-blue transition-colors"
+                        >
                           <div className="flex items-center space-x-4">
                             <div className="h-12 w-12 bg-medical-blue/10 rounded-full flex items-center justify-center">
                               <User className="h-6 w-6 text-medical-blue" />
                             </div>
                             <div>
                               <div className="font-medium">{patient.name}</div>
-                              <div className="text-sm text-muted-foreground">{patient.condition}</div>
-                              <div className="text-xs text-muted-foreground">Last active: {patient.lastActivity}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {patient.condition}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                Last active: {patient.lastActivity}
+                              </div>
                             </div>
                           </div>
                           <div className="flex items-center space-x-4">
                             <div className="text-right">
-                              <div className="text-sm font-medium">{patient.progress}% Complete</div>
-                              <Progress value={patient.progress} className="w-24 h-2" />
+                              <div className="text-sm font-medium">
+                                {patient.progress}% Complete
+                              </div>
+                              <Progress
+                                value={patient.progress}
+                                className="w-24 h-2"
+                              />
                             </div>
-                            <Badge variant={patient.status === 'active' ? 'default' : 'secondary'}>
+                            <Badge
+                              variant={
+                                patient.status === "active"
+                                  ? "default"
+                                  : "secondary"
+                              }
+                            >
                               {patient.status}
                             </Badge>
                             <div className="flex space-x-2">
@@ -877,10 +1035,13 @@ export default function Dashboard() {
                     <CardTitle className="flex items-center justify-between">
                       Today's Exercises
                       <Badge variant="outline">
-                        {todaysExercises.filter(e => e.completed).length}/{todaysExercises.length} Complete
+                        {todaysExercises.filter((e) => e.completed).length}/
+                        {todaysExercises.length} Complete
                       </Badge>
                     </CardTitle>
-                    <CardDescription>Complete your daily rehabilitation routine</CardDescription>
+                    <CardDescription>
+                      Complete your daily rehabilitation routine
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {todaysExercises.map((exercise) => (
@@ -898,7 +1059,9 @@ export default function Dashboard() {
                       <div className="text-center py-8 text-muted-foreground">
                         <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
                         <p>No exercises scheduled for today</p>
-                        <p className="text-sm">Add exercises from the library below</p>
+                        <p className="text-sm">
+                          Add exercises from the library below
+                        </p>
                       </div>
                     )}
                   </CardContent>
@@ -907,7 +1070,9 @@ export default function Dashboard() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Exercise Library</CardTitle>
-                    <CardDescription>Browse and add exercises to your daily routine</CardDescription>
+                    <CardDescription>
+                      Browse and add exercises to your daily routine
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {exerciseLibrary.map((exercise) => (
@@ -917,7 +1082,7 @@ export default function Dashboard() {
                         onSelect={addExerciseToToday}
                         onPreview={(exercise) => {
                           // Could open a preview modal
-                          console.log('Preview exercise:', exercise);
+                          console.log("Preview exercise:", exercise);
                         }}
                       />
                     ))}
@@ -933,30 +1098,49 @@ export default function Dashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>
-                    {user.role === 'provider' ? 'Appointment Schedule' : 'Your Schedule'}
+                    {user.role === "provider"
+                      ? "Appointment Schedule"
+                      : "Your Schedule"}
                   </CardTitle>
                   <Button className="medical-gradient text-white">
                     <Plus className="mr-2 h-4 w-4" />
-                    {user.role === 'provider' ? 'New Appointment' : 'Book Session'}
+                    {user.role === "provider"
+                      ? "New Appointment"
+                      : "Book Session"}
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {mockAppointments.map((appointment) => (
-                    <div key={appointment.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div
+                      key={appointment.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
                       <div className="flex items-center space-x-4">
                         <div className="h-12 w-12 bg-medical-blue/10 rounded-full flex items-center justify-center">
                           <Calendar className="h-6 w-6 text-medical-blue" />
                         </div>
                         <div>
-                          <div className="font-medium">{appointment.patient}</div>
-                          <div className="text-sm text-muted-foreground">{appointment.type}</div>
-                          <div className="text-xs text-muted-foreground">Today at {appointment.time}</div>
+                          <div className="font-medium">
+                            {appointment.patient}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {appointment.type}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            Today at {appointment.time}
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
-                        <Badge variant={appointment.status === 'completed' ? 'default' : 'secondary'}>
+                        <Badge
+                          variant={
+                            appointment.status === "completed"
+                              ? "default"
+                              : "secondary"
+                          }
+                        >
                           {appointment.status}
                         </Badge>
                         <Button variant="ghost" size="sm">
@@ -984,22 +1168,34 @@ export default function Dashboard() {
                   <div className="space-y-6">
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">Patient Satisfaction</span>
-                        <span className="text-sm text-muted-foreground">4.8/5</span>
+                        <span className="text-sm font-medium">
+                          Patient Satisfaction
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          4.8/5
+                        </span>
                       </div>
                       <Progress value={96} className="h-2" />
                     </div>
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">Completion Rate</span>
-                        <span className="text-sm text-muted-foreground">94%</span>
+                        <span className="text-sm font-medium">
+                          Completion Rate
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          94%
+                        </span>
                       </div>
                       <Progress value={94} className="h-2" />
                     </div>
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">Recovery Speed</span>
-                        <span className="text-sm text-muted-foreground">+30%</span>
+                        <span className="text-sm font-medium">
+                          Recovery Speed
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          +30%
+                        </span>
                       </div>
                       <Progress value={130} className="h-2" />
                     </div>
@@ -1014,20 +1210,36 @@ export default function Dashboard() {
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-4 bg-medical-light-blue rounded-lg">
-                      <div className="text-2xl font-bold text-medical-blue">156</div>
-                      <div className="text-sm text-muted-foreground">Sessions This Week</div>
+                      <div className="text-2xl font-bold text-medical-blue">
+                        156
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Sessions This Week
+                      </div>
                     </div>
                     <div className="text-center p-4 bg-medical-light-blue rounded-lg">
-                      <div className="text-2xl font-bold text-medical-green">89%</div>
-                      <div className="text-sm text-muted-foreground">Adherence Rate</div>
+                      <div className="text-2xl font-bold text-medical-green">
+                        89%
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Adherence Rate
+                      </div>
                     </div>
                     <div className="text-center p-4 bg-medical-light-blue rounded-lg">
-                      <div className="text-2xl font-bold text-medical-blue">23</div>
-                      <div className="text-sm text-muted-foreground">New Patients</div>
+                      <div className="text-2xl font-bold text-medical-blue">
+                        23
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        New Patients
+                      </div>
                     </div>
                     <div className="text-center p-4 bg-medical-light-blue rounded-lg">
-                      <div className="text-2xl font-bold text-medical-green">12</div>
-                      <div className="text-sm text-muted-foreground">Completed Programs</div>
+                      <div className="text-2xl font-bold text-medical-green">
+                        12
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Completed Programs
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -1042,8 +1254,12 @@ export default function Dashboard() {
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-medical-navy">Add New Patient</h2>
-                  <p className="text-muted-foreground">Enter patient information to create a new profile</p>
+                  <h2 className="text-2xl font-bold text-medical-navy">
+                    Add New Patient
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Enter patient information to create a new profile
+                  </p>
                 </div>
                 <Button
                   variant="ghost"
@@ -1061,7 +1277,9 @@ export default function Dashboard() {
                 <div className="space-y-6">
                   {/* Personal Information */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-medical-navy">Personal Information</h3>
+                    <h3 className="text-lg font-semibold text-medical-navy">
+                      Personal Information
+                    </h3>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -1069,12 +1287,21 @@ export default function Dashboard() {
                         <Input
                           id="firstName"
                           value={newPatient.firstName}
-                          onChange={(e) => setNewPatient({...newPatient, firstName: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              firstName: e.target.value,
+                            })
+                          }
                           placeholder="Enter first name"
-                          className={formErrors.firstName ? "border-red-500" : ""}
+                          className={
+                            formErrors.firstName ? "border-red-500" : ""
+                          }
                         />
                         {formErrors.firstName && (
-                          <p className="text-sm text-red-500">{formErrors.firstName}</p>
+                          <p className="text-sm text-red-500">
+                            {formErrors.firstName}
+                          </p>
                         )}
                       </div>
 
@@ -1083,12 +1310,21 @@ export default function Dashboard() {
                         <Input
                           id="lastName"
                           value={newPatient.lastName}
-                          onChange={(e) => setNewPatient({...newPatient, lastName: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              lastName: e.target.value,
+                            })
+                          }
                           placeholder="Enter last name"
-                          className={formErrors.lastName ? "border-red-500" : ""}
+                          className={
+                            formErrors.lastName ? "border-red-500" : ""
+                          }
                         />
                         {formErrors.lastName && (
-                          <p className="text-sm text-red-500">{formErrors.lastName}</p>
+                          <p className="text-sm text-red-500">
+                            {formErrors.lastName}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -1100,12 +1336,19 @@ export default function Dashboard() {
                           id="email"
                           type="email"
                           value={newPatient.email}
-                          onChange={(e) => setNewPatient({...newPatient, email: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              email: e.target.value,
+                            })
+                          }
                           placeholder="patient@email.com"
                           className={formErrors.email ? "border-red-500" : ""}
                         />
                         {formErrors.email && (
-                          <p className="text-sm text-red-500">{formErrors.email}</p>
+                          <p className="text-sm text-red-500">
+                            {formErrors.email}
+                          </p>
                         )}
                       </div>
 
@@ -1114,12 +1357,19 @@ export default function Dashboard() {
                         <Input
                           id="phone"
                           value={newPatient.phone}
-                          onChange={(e) => setNewPatient({...newPatient, phone: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              phone: e.target.value,
+                            })
+                          }
                           placeholder="(555) 123-4567"
                           className={formErrors.phone ? "border-red-500" : ""}
                         />
                         {formErrors.phone && (
-                          <p className="text-sm text-red-500">{formErrors.phone}</p>
+                          <p className="text-sm text-red-500">
+                            {formErrors.phone}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -1130,62 +1380,111 @@ export default function Dashboard() {
                         id="dateOfBirth"
                         type="date"
                         value={newPatient.dateOfBirth}
-                        onChange={(e) => setNewPatient({...newPatient, dateOfBirth: e.target.value})}
-                        className={formErrors.dateOfBirth ? "border-red-500" : ""}
+                        onChange={(e) =>
+                          setNewPatient({
+                            ...newPatient,
+                            dateOfBirth: e.target.value,
+                          })
+                        }
+                        className={
+                          formErrors.dateOfBirth ? "border-red-500" : ""
+                        }
                       />
                       {formErrors.dateOfBirth && (
-                        <p className="text-sm text-red-500">{formErrors.dateOfBirth}</p>
+                        <p className="text-sm text-red-500">
+                          {formErrors.dateOfBirth}
+                        </p>
                       )}
                     </div>
                   </div>
 
                   {/* Medical Information */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-medical-navy">Medical Information</h3>
+                    <h3 className="text-lg font-semibold text-medical-navy">
+                      Medical Information
+                    </h3>
 
                     <div className="space-y-2">
                       <Label htmlFor="condition">Primary Condition *</Label>
                       <Select
                         value={newPatient.condition}
-                        onValueChange={(value) => setNewPatient({...newPatient, condition: value})}
+                        onValueChange={(value) =>
+                          setNewPatient({ ...newPatient, condition: value })
+                        }
                       >
-                        <SelectTrigger className={formErrors.condition ? "border-red-500" : ""}>
+                        <SelectTrigger
+                          className={
+                            formErrors.condition ? "border-red-500" : ""
+                          }
+                        >
                           <SelectValue placeholder="Select primary condition" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="knee-replacement">Knee Replacement Recovery</SelectItem>
-                          <SelectItem value="hip-replacement">Hip Replacement Recovery</SelectItem>
-                          <SelectItem value="shoulder-surgery">Shoulder Surgery Recovery</SelectItem>
-                          <SelectItem value="stroke-recovery">Stroke Recovery</SelectItem>
-                          <SelectItem value="arthritis">Arthritis Management</SelectItem>
-                          <SelectItem value="back-pain">Back Pain Relief</SelectItem>
-                          <SelectItem value="cardiac-rehab">Cardiac Rehabilitation</SelectItem>
-                          <SelectItem value="sports-injury">Sports Injury Recovery</SelectItem>
+                          <SelectItem value="knee-replacement">
+                            Knee Replacement Recovery
+                          </SelectItem>
+                          <SelectItem value="hip-replacement">
+                            Hip Replacement Recovery
+                          </SelectItem>
+                          <SelectItem value="shoulder-surgery">
+                            Shoulder Surgery Recovery
+                          </SelectItem>
+                          <SelectItem value="stroke-recovery">
+                            Stroke Recovery
+                          </SelectItem>
+                          <SelectItem value="arthritis">
+                            Arthritis Management
+                          </SelectItem>
+                          <SelectItem value="back-pain">
+                            Back Pain Relief
+                          </SelectItem>
+                          <SelectItem value="cardiac-rehab">
+                            Cardiac Rehabilitation
+                          </SelectItem>
+                          <SelectItem value="sports-injury">
+                            Sports Injury Recovery
+                          </SelectItem>
                           <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                       {formErrors.condition && (
-                        <p className="text-sm text-red-500">{formErrors.condition}</p>
+                        <p className="text-sm text-red-500">
+                          {formErrors.condition}
+                        </p>
                       )}
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="surgeryDate">Surgery Date (if applicable)</Label>
+                        <Label htmlFor="surgeryDate">
+                          Surgery Date (if applicable)
+                        </Label>
                         <Input
                           id="surgeryDate"
                           type="date"
                           value={newPatient.surgeryDate}
-                          onChange={(e) => setNewPatient({...newPatient, surgeryDate: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              surgeryDate: e.target.value,
+                            })
+                          }
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="primaryPhysician">Primary Physician</Label>
+                        <Label htmlFor="primaryPhysician">
+                          Primary Physician
+                        </Label>
                         <Input
                           id="primaryPhysician"
                           value={newPatient.primaryPhysician}
-                          onChange={(e) => setNewPatient({...newPatient, primaryPhysician: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              primaryPhysician: e.target.value,
+                            })
+                          }
                           placeholder="Dr. Smith"
                         />
                       </div>
@@ -1194,25 +1493,41 @@ export default function Dashboard() {
 
                   {/* Emergency Contact */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-medical-navy">Emergency Contact</h3>
+                    <h3 className="text-lg font-semibold text-medical-navy">
+                      Emergency Contact
+                    </h3>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="emergencyContact">Emergency Contact Name</Label>
+                        <Label htmlFor="emergencyContact">
+                          Emergency Contact Name
+                        </Label>
                         <Input
                           id="emergencyContact"
                           value={newPatient.emergencyContact}
-                          onChange={(e) => setNewPatient({...newPatient, emergencyContact: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              emergencyContact: e.target.value,
+                            })
+                          }
                           placeholder="Contact person name"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="emergencyPhone">Emergency Contact Phone</Label>
+                        <Label htmlFor="emergencyPhone">
+                          Emergency Contact Phone
+                        </Label>
                         <Input
                           id="emergencyPhone"
                           value={newPatient.emergencyPhone}
-                          onChange={(e) => setNewPatient({...newPatient, emergencyPhone: e.target.value})}
+                          onChange={(e) =>
+                            setNewPatient({
+                              ...newPatient,
+                              emergencyPhone: e.target.value,
+                            })
+                          }
                           placeholder="(555) 123-4567"
                         />
                       </div>
@@ -1225,7 +1540,9 @@ export default function Dashboard() {
                     <Textarea
                       id="notes"
                       value={newPatient.notes}
-                      onChange={(e) => setNewPatient({...newPatient, notes: e.target.value})}
+                      onChange={(e) =>
+                        setNewPatient({ ...newPatient, notes: e.target.value })
+                      }
                       placeholder="Any additional information about the patient's condition, goals, or special considerations..."
                       className="min-h-[100px]"
                     />
