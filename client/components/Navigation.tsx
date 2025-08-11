@@ -103,3 +103,40 @@ export function Navigation() {
     </nav>
   );
 }
+
+function AuthButtons({ onClose }: { onClose?: () => void }) {
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    if (onClose) onClose();
+  };
+
+  if (user) {
+    return (
+      <div className="flex items-center space-x-4">
+        <Button variant="ghost" asChild>
+          <Link to="/dashboard" onClick={onClose}>
+            <User className="mr-2 h-4 w-4" />
+            {user.firstName}
+          </Link>
+        </Button>
+        <Button variant="outline" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign Out
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <Button variant="ghost" asChild>
+        <Link to="/login" onClick={onClose}>Sign In</Link>
+      </Button>
+      <Button className="medical-gradient text-white" asChild>
+        <Link to="/get-started" onClick={onClose}>Get Started</Link>
+      </Button>
+    </>
+  );
+}
