@@ -47,7 +47,11 @@ export default function SignIn() {
       if (result.success) {
         navigate('/dashboard');
       } else {
-        setSignInError(result.message);
+        if (result.message.includes('Database connection not available')) {
+          setSignInError('Database is currently unavailable. The app is running in demo mode.');
+        } else {
+          setSignInError(result.message);
+        }
       }
     } finally {
       setSignInLoading(false);
