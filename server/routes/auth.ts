@@ -171,6 +171,11 @@ export const login: RequestHandler = async (req, res) => {
 
 export const getProfile: RequestHandler = async (req, res) => {
   try {
+    const dbCheck = checkDatabase();
+    if (dbCheck) {
+      return res.status(503).json(dbCheck);
+    }
+
     const token = req.headers.authorization?.replace('Bearer ', '');
     
     if (!token) {
