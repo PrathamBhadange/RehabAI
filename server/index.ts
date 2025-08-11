@@ -34,10 +34,30 @@ export function createServer() {
     });
   });
 
-  // Authentication routes
-  app.post("/api/auth/register", register);
-  app.post("/api/auth/login", login);
-  app.get("/api/auth/profile", getProfile);
+  // Authentication routes - use demo auth when database unavailable
+  app.post("/api/auth/register", (req, res, next) => {
+    if (isDatabaseConnected()) {
+      register(req, res, next);
+    } else {
+      demoRegister(req, res, next);
+    }
+  });
+
+  app.post("/api/auth/login", (req, res, next) => {
+    if (isDatabaseConnected()) {
+      login(req, res, next);
+    } else {
+      demoLogin(req, res, next);
+    }
+  });
+
+  app.get("/api/auth/profile", (req, res, next) => {
+    if (isDatabaseConnected()) {
+      getProfile(req, res, next);
+    } else {
+      demoProfile(req, res, next);
+    }
+  });
 
   return app;
 }
