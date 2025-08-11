@@ -827,6 +827,239 @@ export default function Dashboard() {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Add Patient Modal */}
+        {showAddPatientModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-medical-navy">Add New Patient</h2>
+                  <p className="text-muted-foreground">Enter patient information to create a new profile</p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setShowAddPatientModal(false);
+                    resetForm();
+                  }}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <form onSubmit={handleAddPatient} className="p-6">
+                <div className="space-y-6">
+                  {/* Personal Information */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-medical-navy">Personal Information</h3>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name *</Label>
+                        <Input
+                          id="firstName"
+                          value={newPatient.firstName}
+                          onChange={(e) => setNewPatient({...newPatient, firstName: e.target.value})}
+                          placeholder="Enter first name"
+                          className={formErrors.firstName ? "border-red-500" : ""}
+                        />
+                        {formErrors.firstName && (
+                          <p className="text-sm text-red-500">{formErrors.firstName}</p>
+                        )}
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name *</Label>
+                        <Input
+                          id="lastName"
+                          value={newPatient.lastName}
+                          onChange={(e) => setNewPatient({...newPatient, lastName: e.target.value})}
+                          placeholder="Enter last name"
+                          className={formErrors.lastName ? "border-red-500" : ""}
+                        />
+                        {formErrors.lastName && (
+                          <p className="text-sm text-red-500">{formErrors.lastName}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={newPatient.email}
+                          onChange={(e) => setNewPatient({...newPatient, email: e.target.value})}
+                          placeholder="patient@email.com"
+                          className={formErrors.email ? "border-red-500" : ""}
+                        />
+                        {formErrors.email && (
+                          <p className="text-sm text-red-500">{formErrors.email}</p>
+                        )}
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number *</Label>
+                        <Input
+                          id="phone"
+                          value={newPatient.phone}
+                          onChange={(e) => setNewPatient({...newPatient, phone: e.target.value})}
+                          placeholder="(555) 123-4567"
+                          className={formErrors.phone ? "border-red-500" : ""}
+                        />
+                        {formErrors.phone && (
+                          <p className="text-sm text-red-500">{formErrors.phone}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+                      <Input
+                        id="dateOfBirth"
+                        type="date"
+                        value={newPatient.dateOfBirth}
+                        onChange={(e) => setNewPatient({...newPatient, dateOfBirth: e.target.value})}
+                        className={formErrors.dateOfBirth ? "border-red-500" : ""}
+                      />
+                      {formErrors.dateOfBirth && (
+                        <p className="text-sm text-red-500">{formErrors.dateOfBirth}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Medical Information */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-medical-navy">Medical Information</h3>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="condition">Primary Condition *</Label>
+                      <Select
+                        value={newPatient.condition}
+                        onValueChange={(value) => setNewPatient({...newPatient, condition: value})}
+                      >
+                        <SelectTrigger className={formErrors.condition ? "border-red-500" : ""}>
+                          <SelectValue placeholder="Select primary condition" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="knee-replacement">Knee Replacement Recovery</SelectItem>
+                          <SelectItem value="hip-replacement">Hip Replacement Recovery</SelectItem>
+                          <SelectItem value="shoulder-surgery">Shoulder Surgery Recovery</SelectItem>
+                          <SelectItem value="stroke-recovery">Stroke Recovery</SelectItem>
+                          <SelectItem value="arthritis">Arthritis Management</SelectItem>
+                          <SelectItem value="back-pain">Back Pain Relief</SelectItem>
+                          <SelectItem value="cardiac-rehab">Cardiac Rehabilitation</SelectItem>
+                          <SelectItem value="sports-injury">Sports Injury Recovery</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {formErrors.condition && (
+                        <p className="text-sm text-red-500">{formErrors.condition}</p>
+                      )}
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="surgeryDate">Surgery Date (if applicable)</Label>
+                        <Input
+                          id="surgeryDate"
+                          type="date"
+                          value={newPatient.surgeryDate}
+                          onChange={(e) => setNewPatient({...newPatient, surgeryDate: e.target.value})}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="primaryPhysician">Primary Physician</Label>
+                        <Input
+                          id="primaryPhysician"
+                          value={newPatient.primaryPhysician}
+                          onChange={(e) => setNewPatient({...newPatient, primaryPhysician: e.target.value})}
+                          placeholder="Dr. Smith"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Emergency Contact */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-medical-navy">Emergency Contact</h3>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="emergencyContact">Emergency Contact Name</Label>
+                        <Input
+                          id="emergencyContact"
+                          value={newPatient.emergencyContact}
+                          onChange={(e) => setNewPatient({...newPatient, emergencyContact: e.target.value})}
+                          placeholder="Contact person name"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="emergencyPhone">Emergency Contact Phone</Label>
+                        <Input
+                          id="emergencyPhone"
+                          value={newPatient.emergencyPhone}
+                          onChange={(e) => setNewPatient({...newPatient, emergencyPhone: e.target.value})}
+                          placeholder="(555) 123-4567"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Additional Notes */}
+                  <div className="space-y-2">
+                    <Label htmlFor="notes">Additional Notes</Label>
+                    <Textarea
+                      id="notes"
+                      value={newPatient.notes}
+                      onChange={(e) => setNewPatient({...newPatient, notes: e.target.value})}
+                      placeholder="Any additional information about the patient's condition, goals, or special considerations..."
+                      className="min-h-[100px]"
+                    />
+                  </div>
+                </div>
+
+                {/* Form Actions */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t mt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setShowAddPatientModal(false);
+                      resetForm();
+                    }}
+                    className="flex-1"
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="flex-1 medical-gradient text-white"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                        Adding Patient...
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Patient
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
