@@ -1,30 +1,44 @@
-import "./global.css";
-
-import { Toaster } from "@/components/ui/toaster";
-import { createRoot } from "react-dom/client";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import { Navigation } from "./components/Navigation";
+import { Footer } from "./components/Footer";
+import PlaceholderPage from "./pages/PlaceholderPage";
 
-const queryClient = new QueryClient();
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen flex flex-col">
+        <Navigation />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/features" element={<PlaceholderPage title="Features" />} />
+            <Route path="/for-patients" element={<PlaceholderPage title="For Patients" />} />
+            <Route path="/for-providers" element={<PlaceholderPage title="For Providers" />} />
+            <Route path="/pricing" element={<PlaceholderPage title="Pricing" />} />
+            <Route path="/about" element={<PlaceholderPage title="About" />} />
+            <Route path="/login" element={<PlaceholderPage title="Sign In" />} />
+            <Route path="/get-started" element={<PlaceholderPage title="Get Started" />} />
+            <Route path="/ai-analysis" element={<PlaceholderPage title="AI Movement Analysis" />} />
+            <Route path="/telehealth" element={<PlaceholderPage title="Telehealth Integration" />} />
+            <Route path="/analytics" element={<PlaceholderPage title="Healthcare Analytics" />} />
+            <Route path="/careers" element={<PlaceholderPage title="Careers" />} />
+            <Route path="/research" element={<PlaceholderPage title="Research" />} />
+            <Route path="/partners" element={<PlaceholderPage title="Partners" />} />
+            <Route path="/news" element={<PlaceholderPage title="News" />} />
+            <Route path="/support" element={<PlaceholderPage title="Support Center" />} />
+            <Route path="/documentation" element={<PlaceholderPage title="Documentation" />} />
+            <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" />} />
+            <Route path="/terms" element={<PlaceholderPage title="Terms of Service" />} />
+            <Route path="/compliance" element={<PlaceholderPage title="HIPAA Compliance" />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </BrowserRouter>
+  );
+}
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-createRoot(document.getElementById("root")!).render(<App />);
+export default App;
