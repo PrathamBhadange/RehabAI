@@ -27,11 +27,11 @@ function App() {
               <Route path="/get-started" element={<SignIn />} />
               <Route path="/start-recovery" element={<StartRecovery />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/features" element={<PlaceholderPage title="Features" />} />
-              <Route path="/for-patients" element={<PlaceholderPage title="For Patients" />} />
-              <Route path="/for-providers" element={<PlaceholderPage title="For Providers" />} />
-              <Route path="/pricing" element={<PlaceholderPage title="Pricing" />} />
-              <Route path="/about" element={<PlaceholderPage title="About" />} />
+              <Route path="/features" element={<Features />} />
+              <Route path="/for-patients" element={<ForPatients />} />
+              <Route path="/for-providers" element={<ForProviders />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/about" element={<About />} />
               <Route path="/ai-analysis" element={<PlaceholderPage title="AI Movement Analysis" />} />
               <Route path="/telehealth" element={<PlaceholderPage title="Telehealth Integration" />} />
               <Route path="/analytics" element={<PlaceholderPage title="Healthcare Analytics" />} />
