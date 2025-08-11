@@ -318,6 +318,138 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 );
 CardFooter.displayName = "CardFooter";
 
+// Compound Components for common patterns
+export interface StatCardProps {
+  title: string;
+  value: string | number;
+  description?: string;
+  icon?: React.ReactNode;
+  trend?: {
+    value: string;
+    direction: "up" | "down" | "neutral";
+  };
+  onClick?: () => void;
+  loading?: boolean;
+}
+
+const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
+  ({ title, value, description, icon, trend, onClick, loading, ...props }, ref) => (
+    <Card
+      ref={ref}
+      variant={onClick ? "interactive" : "default"}
+      onClick={onClick}
+      loading={loading}
+      {...props}
+    >
+      <CardContent variant="compact">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <p className="text-2xl font-bold">{loading ? "..." : value}</p>
+            {description && (
+              <p className="text-xs text-muted-foreground">{description}</p>
+            )}
+            {trend && (
+              <div className={cn(
+                "flex items-center text-xs",
+                trend.direction === "up" ? "text-green-600" :
+                trend.direction === "down" ? "text-red-600" : "text-muted-foreground"
+              )}>
+                <span className="mr-1">
+                  {trend.direction === "up" ? "↗" : trend.direction === "down" ? "↘" : "→"}
+                </span>
+                {trend.value}
+              </div>
+            )}
+          </div>
+          {icon && (
+            <div className="text-muted-foreground">
+              {icon}
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  )
+);
+StatCard.displayName = "StatCard";
+
+export interface ActionCardProps {
+  title: string;
+  description?: string;
+  icon?: React.ReactNode;
+  action: React.ReactNode;
+  status?: "default" | "success" | "warning" | "error";
+  onClick?: () => void;
+}
+
+const ActionCard = React.forwardRef<HTMLDivElement, ActionCardProps>(
+  ({ title, description, icon, action, status = "default", onClick, ...props }, ref) => (
+    <Card
+      ref={ref}
+      variant={status === "default" ? (onClick ? "interactive" : "default") : status}
+      onClick={onClick}
+      {...props}
+    >
+      <CardHeader>
+        <div className="flex items-center space-x-3">
+          {icon && (
+            <div className="flex-shrink-0">
+              {icon}
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <CardTitle size="sm">{title}</CardTitle>
+            {description && (
+              <CardDescription>{description}</CardDescription>
+            )}
+          </div>
+        </div>
+      </CardHeader>
+      <CardFooter variant="end">
+        {action}
+      </CardFooter>
+    </Card>
+  )
+);
+ActionCard.displayName = "ActionCard";
+
+export interface CollapsibleCardProps {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  defaultCollapsed?: boolean;
+  badge?: React.ReactNode;
+}
+
+const CollapsibleCard = React.forwardRef<HTMLDivElement, CollapsibleCardProps>(
+  ({ title, description, children, defaultCollapsed = false, badge, ...props }, ref) => {
+    const [collapsed, setCollapsed] = React.useState(defaultCollapsed);
+
+    return (
+      <Card ref={ref} {...props}>
+        <CardHeader
+          collapsible
+          collapsed={collapsed}
+          onToggle={() => setCollapsed(!collapsed)}
+          badge={badge}
+        >
+          <CardTitle size="sm">{title}</CardTitle>
+          {description && (
+            <CardDescription>{description}</CardDescription>
+          )}
+        </CardHeader>
+        {!collapsed && (
+          <CardContent>
+            {children}
+          </CardContent>
+        )}
+      </Card>
+    );
+  }
+);
+CollapsibleCard.displayName = "CollapsibleCard";
+
 export {
   Card,
   CardHeader,
@@ -325,4 +457,7 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
+  StatCard,
+  ActionCard,
+  CollapsibleCard,
 };
