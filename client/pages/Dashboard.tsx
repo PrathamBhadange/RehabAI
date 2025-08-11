@@ -37,7 +37,8 @@ import {
   AlertCircle,
   Heart,
   Brain,
-  Zap
+  Zap,
+  X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
