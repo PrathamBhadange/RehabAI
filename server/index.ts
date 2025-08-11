@@ -24,6 +24,15 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Debug endpoint
+  app.get("/api/status", (_req, res) => {
+    res.json({
+      status: 'ok',
+      database: connectDatabase ? 'configured' : 'not configured',
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // Authentication routes
   app.post("/api/auth/register", register);
   app.post("/api/auth/login", login);
