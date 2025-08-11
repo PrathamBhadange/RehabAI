@@ -45,9 +45,11 @@ export default function Index() {
                 <Button size="lg" className="medical-gradient text-white" asChild>
                   <Link to="/start-recovery">Start Your Recovery <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-medical-blue text-medical-blue hover:bg-medical-blue hover:text-white">
-                  <Play className="mr-2 h-4 w-4" />
-                  Watch Demo
+                <Button size="lg" variant="outline" className="border-medical-blue text-medical-blue hover:bg-medical-blue hover:text-white" asChild>
+                  <Link to="/start-recovery">
+                    <Play className="mr-2 h-4 w-4" />
+                    Watch Demo
+                  </Link>
                 </Button>
               </div>
               <div className="flex items-center space-x-6 text-sm text-muted-foreground">
