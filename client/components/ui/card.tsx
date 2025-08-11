@@ -108,12 +108,88 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = "CardDescription";
 
-const CardContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
-));
+const cardContentVariants = cva("transition-all duration-200", {
+  variants: {
+    variant: {
+      default: "p-6 pt-0",
+      compact: "p-4 pt-0",
+      spacious: "p-8 pt-0",
+      flush: "p-0",
+      interactive: "p-6 pt-0 hover:bg-muted/30 cursor-pointer",
+    },
+    loading: {
+      true: "animate-pulse",
+      false: "",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    loading: false,
+  },
+});
+
+export interface CardContentProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardContentVariants> {
+  loading?: boolean;
+  empty?: boolean;
+  emptyMessage?: string;
+  emptyIcon?: React.ReactNode;
+}
+
+const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
+  ({
+    className,
+    variant,
+    loading,
+    empty,
+    emptyMessage = "No data available",
+    emptyIcon,
+    children,
+    ...props
+  }, ref) => {
+    if (empty) {
+      return (
+        <div
+          ref={ref}
+          className={cn(cardContentVariants({ variant, loading }), "text-center py-8", className)}
+          {...props}
+        >
+          <div className="flex flex-col items-center space-y-3 text-muted-foreground">
+            {emptyIcon && <div className="opacity-50">{emptyIcon}</div>}
+            <p className="text-sm">{emptyMessage}</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (loading) {
+      return (
+        <div
+          ref={ref}
+          className={cn(cardContentVariants({ variant, loading: true }), className)}
+          {...props}
+        >
+          <div className="space-y-3">
+            <div className="h-4 bg-muted rounded animate-pulse" />
+            <div className="h-4 bg-muted rounded animate-pulse w-3/4" />
+            <div className="h-4 bg-muted rounded animate-pulse w-1/2" />
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        ref={ref}
+        className={cn(cardContentVariants({ variant, loading }), className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 CardContent.displayName = "CardContent";
 
 const CardFooter = React.forwardRef<
