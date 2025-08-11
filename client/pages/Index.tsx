@@ -43,7 +43,7 @@ export default function Index() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="medical-gradient text-white" asChild>
-                  <Link to="/get-started">Start Your Recovery <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  <Link to="/start-recovery">Start Your Recovery <ArrowRight className="ml-2 h-4 w-4" /></Link>
                 </Button>
                 <Button size="lg" variant="outline" className="border-medical-blue text-medical-blue hover:bg-medical-blue hover:text-white">
                   <Play className="mr-2 h-4 w-4" />
