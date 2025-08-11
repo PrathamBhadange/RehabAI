@@ -3,7 +3,8 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { register, login, getProfile } from "./routes/auth";
-import { connectDatabase } from "./config/database";
+import { demoLogin, demoRegister, demoProfile } from "./routes/demo-auth";
+import { connectDatabase, isDatabaseConnected } from "./config/database";
 
 export function createServer() {
   const app = express();
