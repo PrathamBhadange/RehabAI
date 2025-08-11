@@ -79,6 +79,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email, password }),
       });
 
+      // Check if response is ok and has content
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Login response error:', response.status, errorText);
+        return { success: false, message: `Server error: ${response.status}` };
+      }
+
+      // Check if response has content
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Login response not JSON:', contentType);
+        return { success: false, message: 'Invalid server response' };
+      }
+
       const data = await response.json();
 
       if (data.success && data.token) {
