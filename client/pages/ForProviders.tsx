@@ -532,7 +532,11 @@ export default function ForProviders() {
                   <span>Improve outcomes by 35%</span>
                 </div>
               </div>
-              <Button size="lg" className="medical-gradient text-white">
+              <Button
+                size="lg"
+                className="medical-gradient text-white"
+                onClick={() => setShowROICalculator(true)}
+              >
                 <BarChart3 className="mr-2 h-4 w-4" />
                 Calculate Your ROI
               </Button>
