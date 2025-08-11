@@ -616,6 +616,12 @@ export default function ForProviders() {
           </div>
         </div>
       </section>
+
+      {/* ROI Calculator Modal */}
+      <ROICalculator
+        isOpen={showROICalculator}
+        onClose={() => setShowROICalculator(false)}
+      />
     </div>
   );
 }
