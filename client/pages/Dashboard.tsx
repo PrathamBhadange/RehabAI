@@ -586,7 +586,10 @@ export default function Dashboard() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle>Patient Management</CardTitle>
-                    <Button className="medical-gradient text-white">
+                    <Button
+                      className="medical-gradient text-white"
+                      onClick={() => setShowAddPatientModal(true)}
+                    >
                       <Plus className="mr-2 h-4 w-4" />
                       Add Patient
                     </Button>
