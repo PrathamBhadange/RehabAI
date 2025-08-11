@@ -50,9 +50,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           'Authorization': `Bearer ${authToken}`,
         },
       });
-      
+
+      // Check if response is ok
+      if (!response.ok) {
+        console.warn('Profile fetch failed:', response.status);
+        localStorage.removeItem('rehabai_token');
+        setToken(null);
+        return;
+      }
+
+      // Check if response has JSON content
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.warn('Profile response not JSON:', contentType);
+        localStorage.removeItem('rehabai_token');
+        setToken(null);
+        return;
+      }
+
       const data = await response.json();
-      
+
       if (data.success && data.user) {
         setUser(data.user);
       } else {
