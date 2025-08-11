@@ -27,8 +27,23 @@ interface AuthResponse {
   token?: string;
 }
 
+const checkDatabase = () => {
+  if (!isDatabaseConnected()) {
+    return {
+      success: false,
+      message: 'Database connection not available. Please try again later.',
+    };
+  }
+  return null;
+};
+
 export const register: RequestHandler = async (req, res) => {
   try {
+    const dbCheck = checkDatabase();
+    if (dbCheck) {
+      return res.status(503).json(dbCheck);
+    }
+
     const { email, password, firstName, lastName, role = 'patient' }: AuthRequest = req.body;
 
     // Validate required fields
