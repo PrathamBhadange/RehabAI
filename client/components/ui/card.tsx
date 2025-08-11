@@ -69,16 +69,59 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = "Card";
 
-const CardHeader = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
-    {...props}
-  />
-));
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  action?: React.ReactNode;
+  badge?: React.ReactNode;
+  collapsible?: boolean;
+  collapsed?: boolean;
+  onToggle?: () => void;
+}
+
+const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
+  ({ className, action, badge, collapsible, collapsed, onToggle, children, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "flex flex-col space-y-1.5 p-6",
+        collapsible && "cursor-pointer hover:bg-muted/30 transition-colors",
+        className
+      )}
+      onClick={collapsible ? onToggle : undefined}
+      {...props}
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex-1 space-y-1.5">
+          {children}
+        </div>
+        <div className="flex items-center space-x-2">
+          {badge}
+          {action}
+          {collapsible && (
+            <button
+              className="p-1 hover:bg-muted rounded"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggle?.();
+              }}
+            >
+              <svg
+                className={cn(
+                  "h-4 w-4 transition-transform",
+                  collapsed ? "rotate-180" : ""
+                )}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+);
 CardHeader.displayName = "CardHeader";
 
 const CardTitle = React.forwardRef<
