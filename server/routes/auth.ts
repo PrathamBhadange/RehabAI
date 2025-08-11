@@ -106,6 +106,11 @@ export const register: RequestHandler = async (req, res) => {
 
 export const login: RequestHandler = async (req, res) => {
   try {
+    const dbCheck = checkDatabase();
+    if (dbCheck) {
+      return res.status(503).json(dbCheck);
+    }
+
     const { email, password }: AuthRequest = req.body;
 
     // Validate required fields
