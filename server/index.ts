@@ -2,9 +2,14 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { register, login, getProfile } from "./routes/auth";
+import { connectDatabase } from "./config/database";
 
 export function createServer() {
   const app = express();
+
+  // Connect to MongoDB
+  connectDatabase();
 
   // Middleware
   app.use(cors());
@@ -18,6 +23,11 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Authentication routes
+  app.post("/api/auth/register", register);
+  app.post("/api/auth/login", login);
+  app.get("/api/auth/profile", getProfile);
 
   return app;
 }
