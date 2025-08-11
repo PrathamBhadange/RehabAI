@@ -409,6 +409,72 @@ export default function Dashboard() {
     setFormErrors({});
   };
 
+  const handleExerciseComplete = (exerciseId: string) => {
+    setTodaysExercises(prev =>
+      prev.map(exercise =>
+        exercise.id === exerciseId
+          ? {
+              ...exercise,
+              completed: true,
+              progress: 100,
+              lastCompleted: new Date().toISOString(),
+              streak: (exercise.streak || 0) + 1
+            }
+          : exercise
+      )
+    );
+
+    // Add completion notification
+    const exercise = todaysExercises.find(e => e.id === exerciseId);
+    if (exercise) {
+      setNotifications(prev => [
+        {
+          id: Date.now(),
+          message: `Great job! You completed ${exercise.name}`,
+          time: "Just now",
+          type: "success"
+        },
+        ...prev
+      ]);
+    }
+  };
+
+  const handleExerciseStart = (exerciseId: string) => {
+    const exercise = todaysExercises.find(e => e.id === exerciseId);
+    if (exercise) {
+      setNotifications(prev => [
+        {
+          id: Date.now(),
+          message: `Started ${exercise.name} - You've got this!`,
+          time: "Just now",
+          type: "info"
+        },
+        ...prev
+      ]);
+    }
+  };
+
+  const addExerciseToToday = (exercise: Exercise) => {
+    const newExercise = {
+      ...exercise,
+      id: `${exercise.id}-${Date.now()}`,
+      completed: false,
+      progress: 0
+    };
+
+    setTodaysExercises(prev => [...prev, newExercise]);
+
+    setNotifications(prev => [
+      {
+        id: Date.now(),
+        message: `Added ${exercise.name} to today's plan`,
+        time: "Just now",
+        type: "info"
+      },
+      ...prev
+    ]);
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-medical-light-blue flex items-center justify-center">
