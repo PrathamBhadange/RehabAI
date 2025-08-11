@@ -556,6 +556,111 @@ Contact us:
               </div>
             </div>
           )}
+
+          {/* Email Form Modal */}
+          {showEmailForm && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <Card className="w-full max-w-md">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center">
+                        <Mail className="mr-2 h-5 w-5 text-medical-blue" />
+                        Email ROI Results
+                      </CardTitle>
+                      <CardDescription>
+                        Send the detailed ROI analysis to your email
+                      </CardDescription>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowEmailForm(false)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {emailSent ? (
+                    <Alert className="border-medical-green/20 bg-medical-green/5">
+                      <CheckCircle className="h-4 w-4 text-medical-green" />
+                      <AlertDescription className="text-medical-green">
+                        Email prepared successfully! Your default email client should open with the ROI report.
+                      </AlertDescription>
+                    </Alert>
+                  ) : (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="your.email@company.com"
+                          value={emailData.email}
+                          onChange={(e) => setEmailData(prev => ({ ...prev, email: e.target.value }))}
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Full Name *</Label>
+                        <Input
+                          id="name"
+                          placeholder="John Smith"
+                          value={emailData.name}
+                          onChange={(e) => setEmailData(prev => ({ ...prev, name: e.target.value }))}
+                          required
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="organization">Organization</Label>
+                        <Input
+                          id="organization"
+                          placeholder="Healthcare Practice Name"
+                          value={emailData.organization}
+                          onChange={(e) => setEmailData(prev => ({ ...prev, organization: e.target.value }))}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="message">Additional Message (Optional)</Label>
+                        <Input
+                          id="message"
+                          placeholder="Any specific questions or requirements..."
+                          value={emailData.message}
+                          onChange={(e) => setEmailData(prev => ({ ...prev, message: e.target.value }))}
+                        />
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowEmailForm(false)}
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handleEmailSend}
+                          disabled={!emailData.email || !emailData.name}
+                          className="flex-1 medical-gradient text-white"
+                        >
+                          <Mail className="mr-2 h-4 w-4" />
+                          Send Email
+                        </Button>
+                      </div>
+
+                      <div className="text-xs text-muted-foreground text-center">
+                        * Required fields. Your email will open with pre-filled ROI analysis results.
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
     </div>
