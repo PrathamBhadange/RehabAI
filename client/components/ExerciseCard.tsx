@@ -151,18 +151,7 @@ export function ExerciseCard({
     }
   };
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
   const progress = ((exercise.duration - timeRemaining) / exercise.duration) * 100;
-  const difficultyColor = {
-    'Beginner': 'bg-green-100 text-green-700 border-green-200',
-    'Intermediate': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-    'Advanced': 'bg-red-100 text-red-700 border-red-200'
-  };
 
   const encouragementMessages = [
     "Keep going! You're doing great! 💪",
