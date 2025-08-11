@@ -295,8 +295,15 @@ export default function SignIn() {
             </TabsContent>
           </Tabs>
           
-          <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-6 space-y-4">
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-xs font-semibold text-blue-800 mb-1">Demo Mode - Try These Credentials:</p>
+              <div className="space-y-1 text-xs text-blue-700">
+                <div><strong>Patient:</strong> patient@demo.com / demo123</div>
+                <div><strong>Provider:</strong> provider@demo.com / demo123</div>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground text-center">
               By signing up, you agree to our{' '}
               <Link to="/terms" className="text-medical-blue hover:underline">
                 Terms of Service
