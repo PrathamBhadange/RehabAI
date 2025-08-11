@@ -235,8 +235,8 @@ export default function Index() {
                     <span>Freemium model with basic exercises</span>
                   </li>
                 </ul>
-                <Button className="w-full medical-gradient text-white" size="lg">
-                  Start Free Trial
+                <Button className="w-full medical-gradient text-white" size="lg" asChild>
+                  <Link to="/start-recovery">Start Free Trial</Link>
                 </Button>
               </CardContent>
             </Card>
