@@ -1,20 +1,72 @@
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className,
-    )}
-    {...props}
-  />
-));
+const cardVariants = cva(
+  "rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-200",
+  {
+    variants: {
+      variant: {
+        default: "hover:shadow-md",
+        interactive: "hover:shadow-lg hover:scale-[1.02] cursor-pointer hover:border-primary/50",
+        elevated: "shadow-lg hover:shadow-xl",
+        outline: "border-2 border-dashed hover:border-solid hover:bg-muted/50",
+        success: "border-green-200 bg-green-50 hover:bg-green-100",
+        warning: "border-yellow-200 bg-yellow-50 hover:bg-yellow-100",
+        error: "border-red-200 bg-red-50 hover:bg-red-100",
+        info: "border-blue-200 bg-blue-50 hover:bg-blue-100",
+        medical: "border-medical-blue/20 bg-medical-blue/5 hover:bg-medical-blue/10",
+      },
+      size: {
+        default: "",
+        sm: "p-3",
+        lg: "p-8",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
+
+export interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {
+  asChild?: boolean;
+  href?: string;
+  loading?: boolean;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant, size, asChild = false, href, loading, onClick, ...props }, ref) => {
+    const Comp = href ? "a" : "div";
+    const isClickable = onClick || href;
+
+    return (
+      <Comp
+        ref={ref}
+        className={cn(
+          cardVariants({ variant: isClickable && !variant ? "interactive" : variant, size }),
+          loading && "animate-pulse pointer-events-none opacity-70",
+          className
+        )}
+        href={href}
+        onClick={onClick}
+        role={isClickable ? "button" : undefined}
+        tabIndex={isClickable ? 0 : undefined}
+        onKeyDown={isClickable ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick?.(e as any);
+          }
+        } : undefined}
+        {...props}
+      />
+    );
+  }
+);
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<
