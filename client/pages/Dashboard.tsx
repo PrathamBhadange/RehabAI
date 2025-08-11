@@ -41,6 +41,7 @@ import {
   X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ExerciseCard, ExerciseLibraryCard, type Exercise } from '@/components/ExerciseCard';
 
 // Mock data for demonstration
 const mockPatients = [
