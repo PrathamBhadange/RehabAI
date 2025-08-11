@@ -37,6 +37,14 @@ export function ROICalculator({ isOpen, onClose }: ROICalculatorProps) {
   });
 
   const [showResults, setShowResults] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [emailData, setEmailData] = useState({
+    email: '',
+    name: '',
+    organization: '',
+    message: ''
+  });
+  const [emailSent, setEmailSent] = useState(false);
 
   // ROI Calculations
   const calculateROI = () => {
