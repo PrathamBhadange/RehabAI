@@ -195,6 +195,8 @@ const features = [
 ];
 
 export default function ForProviders() {
+  const [showROICalculator, setShowROICalculator] = useState(false);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
