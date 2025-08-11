@@ -96,29 +96,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ email, password }),
       });
 
-      // Check if response is ok and has content
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Login response error:', response.status, errorText);
-        return { success: false, message: `Server error: ${response.status}` };
-      }
-
-      // Check if response has content
+      // Check content type first before reading body
       const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        console.error('Login response not JSON:', contentType);
+      const isJson = contentType && contentType.includes('application/json');
+
+      // Read response body only once
+      let responseData;
+      if (isJson) {
+        responseData = await response.json();
+      } else {
+        const responseText = await response.text();
+        console.error('Login response not JSON:', contentType, responseText);
         return { success: false, message: 'Invalid server response' };
       }
 
-      const data = await response.json();
+      // Handle non-ok responses after reading the body
+      if (!response.ok) {
+        console.error('Login response error:', response.status, responseData);
+        const errorMessage = responseData?.message || `Server error: ${response.status}`;
+        return { success: false, message: errorMessage };
+      }
 
-      if (data.success && data.token) {
-        setToken(data.token);
-        setUser(data.user);
-        localStorage.setItem('rehabai_token', data.token);
-        return { success: true, message: data.message };
+      // Process successful response
+      if (responseData.success && responseData.token) {
+        setToken(responseData.token);
+        setUser(responseData.user);
+        localStorage.setItem('rehabai_token', responseData.token);
+        return { success: true, message: responseData.message };
       } else {
-        return { success: false, message: data.message || 'Login failed' };
+        return { success: false, message: responseData.message || 'Login failed' };
       }
     } catch (error) {
       console.error('Login error:', error);
