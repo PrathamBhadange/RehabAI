@@ -93,12 +93,9 @@ export function Navigation() {
               About
             </Link>
             <div className="pt-4 space-y-2">
-              <Button variant="ghost" className="w-full justify-start" asChild>
-                <Link to="/login" onClick={() => setIsOpen(false)}>Sign In</Link>
-              </Button>
-              <Button className="w-full medical-gradient text-white" asChild>
-                <Link to="/get-started" onClick={() => setIsOpen(false)}>Get Started</Link>
-              </Button>
+              <div className="md:hidden">
+                <AuthButtons onClose={() => setIsOpen(false)} />
+              </div>
             </div>
           </div>
         </div>
