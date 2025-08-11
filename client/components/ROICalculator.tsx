@@ -539,11 +539,17 @@ Contact us:
                   <Calculator className="mr-2 h-4 w-4" />
                   Recalculate
                 </Button>
-                <Button className="flex-1 bg-medical-green text-white">
+                <Button
+                  onClick={downloadPDFReport}
+                  className="flex-1 bg-medical-green text-white hover:bg-medical-green/90"
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Download Report
                 </Button>
-                <Button className="flex-1 medical-gradient text-white">
+                <Button
+                  onClick={() => setShowEmailForm(true)}
+                  className="flex-1 medical-gradient text-white"
+                >
                   <Mail className="mr-2 h-4 w-4" />
                   Email Results
                 </Button>
