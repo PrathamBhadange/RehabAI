@@ -278,8 +278,8 @@ export default function Index() {
                     <span>Revenue from analytics services</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-medical-green text-white" size="lg">
-                  Contact Sales
+                <Button className="w-full bg-medical-green text-white" size="lg" asChild>
+                  <Link to="/for-providers">Contact Sales</Link>
                 </Button>
               </CardContent>
             </Card>
