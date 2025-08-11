@@ -36,12 +36,7 @@ export function Navigation() {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" asChild>
-            <Link to="/login">Sign In</Link>
-          </Button>
-          <Button className="medical-gradient text-white" asChild>
-            <Link to="/get-started">Get Started</Link>
-          </Button>
+          <AuthButtons />
         </div>
 
         {/* Mobile menu button */}
