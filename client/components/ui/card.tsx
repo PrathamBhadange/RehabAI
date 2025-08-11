@@ -124,31 +124,63 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
 );
 CardHeader.displayName = "CardHeader";
 
-const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h3
-    ref={ref}
-    className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
-      className,
-    )}
-    {...props}
-  />
-));
+const cardTitleVariants = cva("font-semibold leading-none tracking-tight", {
+  variants: {
+    size: {
+      sm: "text-lg",
+      default: "text-2xl",
+      lg: "text-3xl",
+    },
+    status: {
+      default: "",
+      success: "text-green-700",
+      warning: "text-yellow-700",
+      error: "text-red-700",
+      info: "text-blue-700",
+    },
+  },
+  defaultVariants: {
+    size: "default",
+    status: "default",
+  },
+});
+
+export interface CardTitleProps
+  extends React.HTMLAttributes<HTMLHeadingElement>,
+    VariantProps<typeof cardTitleVariants> {
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+}
+
+const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+  ({ className, size, status, as: Comp = "h3", ...props }, ref) => (
+    <Comp
+      ref={ref}
+      className={cn(cardTitleVariants({ size, status }), className)}
+      {...props}
+    />
+  )
+);
 CardTitle.displayName = "CardTitle";
 
-const CardDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props}
-  />
-));
+export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  truncate?: boolean;
+  lines?: number;
+}
+
+const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
+  ({ className, truncate, lines, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn(
+        "text-sm text-muted-foreground",
+        truncate && "truncate",
+        lines && `line-clamp-${lines}`,
+        className
+      )}
+      {...props}
+    />
+  )
+);
 CardDescription.displayName = "CardDescription";
 
 const cardContentVariants = cva("transition-all duration-200", {
